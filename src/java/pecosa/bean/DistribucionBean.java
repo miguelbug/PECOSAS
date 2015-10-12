@@ -30,6 +30,8 @@ import pecosa.daoImpl.VistaDaoImpl;
 import pecosa.model.Dependencia;
 import pecosa.model.GuardarDistribucion;
 import pecosa.model.GuardarProducto;
+import pecosa.model.Pecosa;
+import pecosa.model.PecosaProductos;
 import pecosa.model.ProductoVista;
 import pecosa.model.ProductosConfirmados;
 import pecosa.model.ProductosDistribuidos;
@@ -61,6 +63,8 @@ public class DistribucionBean implements Serializable {
     private String destino;
     private String cantidad;
     private List<Integer> cantidades;
+
+    private String codigopecosa;
 
     private List<ProductosDistribuidos> listaDistrib;
     private DistribuidosDao distribuidosD;
@@ -109,7 +113,7 @@ public class DistribucionBean implements Serializable {
         try {
             distribuidosD.confirmarSBN(((ProductosDistribuidos) event.getObject()).getSbn(), ((ProductosDistribuidos) event.getObject()).getIdNumero());
             llenarDistribuidos();
-            message = new FacesMessage(FacesMessage.SEVERITY_INFO, "REALIZADO", "SE HA ACTUALIZADO EL PRODUCTO: "+((ProductosDistribuidos) event.getObject()).getBien());
+            message = new FacesMessage(FacesMessage.SEVERITY_INFO, "REALIZADO", "SE HA ACTUALIZADO EL PRODUCTO: " + ((ProductosDistribuidos) event.getObject()).getBien());
             RequestContext.getCurrentInstance().showMessageInDialog(message);
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -137,8 +141,14 @@ public class DistribucionBean implements Serializable {
     public void confirmar() throws ParseException {
         FacesMessage message = null;
         try {
+            Date date = new Date();
+            GuardarProducto gp = new GuardarProducto();
+            GuardarDistribucion gd = new GuardarDistribucion();
+            Pecosa p = new Pecosa();
+            p.setCodigo(this.codigopecosa);
+            p.setFecha(date);
+            confirm.guardarPecosa(p);
             for (int i = 0; i < productosSelec.size(); i++) {
-                GuardarProducto gp = new GuardarProducto();
                 gp.setDireccion(productosSelec.get(i).getDireccion());
                 gp.setFecha_crea(transfFecha(productosSelec.get(i).getFecha()));
                 gp.setBien(productosSelec.get(i).getBien());
@@ -149,14 +159,18 @@ public class DistribucionBean implements Serializable {
                 gp.setDetalle(productosSelec.get(i).getDetalle());
                 gp.setCodigo(Integer.parseInt(productosSelec.get(i).getCodigo()));
                 vistaD.confirmarProductos_1(gp);
-
-                GuardarDistribucion gd = new GuardarDistribucion();
+                
                 gd.setId_numero(vistaD.getIdProductoInterno(gp.getFecha_crea(), gp.getBien(), gp.getCodigo()));
                 gd.setCantidad(Integer.parseInt(productosSelec.get(i).getCantidad()));
                 gd.setFecha(transfFecha(productosSelec.get(i).getFecha()));
                 gd.setCodigo(vistaD.getIdDependencia(productosSelec.get(i).getDestino()));
                 gd.setId_usuario(usu.getIdUsuario());
                 vistaD.confirmarProductos_2(gd);
+                
+                PecosaProductos pp = new PecosaProductos();
+                pp.setIdpecosa(confirm.getIdPecosa(p));
+                pp.setIdproducto(confirm.getIdProductos(gp));
+                confirm.guardarProdPecosa(pp);
             }
             lista.clear();
             lista = vistaD.getProductosVista();
@@ -426,6 +440,14 @@ public class DistribucionBean implements Serializable {
 
     public void setConfirmSeleccionados2(ProductosConfirmados confirmSeleccionados2) {
         this.confirmSeleccionados2 = confirmSeleccionados2;
+    }
+
+    public String getCodigopecosa() {
+        return codigopecosa;
+    }
+
+    public void setCodigopecosa(String codigopecosa) {
+        this.codigopecosa = codigopecosa;
     }
 
 }

@@ -13,6 +13,9 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import pecosa.connectionFactory.MyBatisConnectionFactory;
 import pecosa.dao.ConfirmadosDao;
 import pecosa.model.GuardarDistribucion;
+import pecosa.model.GuardarProducto;
+import pecosa.model.Pecosa;
+import pecosa.model.PecosaProductos;
 import pecosa.model.ProductosConfirmados;
 import pecosa.model.VerificarDistribucion;
 
@@ -116,6 +119,64 @@ public class ConfirmadosDaoImpl implements ConfirmadosDao {
         } finally {
             session.close();
         }
+    }
+
+    @Override
+    public void guardarPecosa(Pecosa p) {
+        SqlSession session = sqlSessionFactory.openSession();
+        try {
+            session.insert("Confirmados.guardar_pecosa", p);
+            session.commit();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            session.close();
+        }
+    }
+
+    @Override
+    public void guardarProdPecosa(PecosaProductos pp) {
+        SqlSession session = sqlSessionFactory.openSession();
+        try {
+            session.insert("Confirmados.guardar_prodpecosa", pp);
+            session.commit();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            session.close();
+        }
+    }
+
+    @Override
+    public Integer getIdProductos(GuardarProducto gp) {
+        Integer idproductos = null;
+        SqlSession session = sqlSessionFactory.openSession();
+        try {
+            idproductos = session.selectOne("Confirmados.getIdproducto", gp);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.out.println("ERROR EN Confirmados.getIdproducto");
+        } finally {
+            session.close();
+        }
+        System.out.println(idproductos);
+        return idproductos;
+    }
+
+    @Override
+    public Integer getIdPecosa(Pecosa p) {
+        Integer idpecosa = null;
+        SqlSession session = sqlSessionFactory.openSession();
+        try {
+            idpecosa = session.selectOne("Confirmados.getIdpecosa", p);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.out.println("ERROR EN Confirmados.getIdpecosa");
+        } finally {
+            session.close();
+        }
+        System.out.println(idpecosa);
+        return idpecosa;
     }
 
     public SqlSessionFactory getSqlSessionFactory() {

@@ -8,6 +8,9 @@ package pecosa.dao;
 
 import java.util.List;
 import pecosa.model.GuardarDistribucion;
+import pecosa.model.GuardarProducto;
+import pecosa.model.Pecosa;
+import pecosa.model.PecosaProductos;
 import pecosa.model.ProductosConfirmados;
 import pecosa.model.VerificarDistribucion;
 
@@ -22,4 +25,8 @@ public interface ConfirmadosDao {
     public void actualizarDistribucion2(VerificarDistribucion verif);
     public VerificarDistribucion verificarProducto(Integer idDependencia, Integer idNumero);
     public void modificarSBN(String sbn, Integer idNumero);
+    public Integer getIdProductos(GuardarProducto gp);
+    public Integer getIdPecosa(Pecosa p);
+    public void guardarPecosa(Pecosa p);
+    public void guardarProdPecosa(PecosaProductos pp);
 }

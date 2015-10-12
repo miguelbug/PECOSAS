@@ -31,6 +31,14 @@
         <result property="cantidad" column="CANTIDAD"/>
     </resultMap>
     
+    <resultMap id="result3" type="Integer">
+        <result property="getIdprod" column="IDPRODUCTO"/>
+    </resultMap>
+    
+    <resultMap id="result4" type="Integer">
+        <result property="getIdpecosa" column="IDPECOSA"/>
+    </resultMap>
+    
     <select id="getProdConfirm" resultMap="result">
         SELECT PO.ID_NUMERO AS IDNUMERO,
         PO.DIRECCION AS DIRECCION,
@@ -72,6 +80,16 @@
         VALUES (#{cantidad},#{fecha},#{id_numero},#{codigo},#{id_usuario})
     </insert>
     
+    <insert id="guardar_pecosa" parameterType="pecosa.model.Pecosa">
+        INSERT INTO PECOSA (CODIGO,FECHA)
+        VALUES (#{codigo},#{fecha})
+    </insert>
+    
+    <insert id="guardar_prodpecosa" parameterType="pecosa.model.PecosaProductos">
+        INSERT INTO PECOSA_PRODUCTOS (ID_NUMERO,ID_PECOSA)
+        VALUES (#{idproducto},#{idpecosa})
+    </insert>
+    
     <update id="update_distrib" parameterType="java.util.Map">
         UPDATE DISTRIBUCION
         SET
@@ -95,4 +113,23 @@
         AND ID_NUMERO = #{id_numero}
     </update>
     
+    <select id="getIdproducto" resultMap="result3" parameterType="pecosa.model.GuardarProducto">
+        SELECT ID_NUMERO AS IDPRODUCTO
+        FROM PRODUCTOS_OGPL
+        WHERE DIRECCION=#{direccion}
+        AND FECHA_CREACION=#{fecha_crea}
+        AND BIEN=#{bien}
+        AND UNIDAD=#{unidad}
+        AND MARCA=#{marca}
+        AND PRECIO=#{precio}
+        AND SERIE=#{serie}
+        AND DETALLE=#{detalle}
+        AND CODIGO=#{codigo}
+    </select>
+    
+    <select id="getIdpecosa" resultMap="result4" parameterType="pecosa.model.Pecosa">
+        SELECT ID_PECOSA AS IDPECOSA
+        FROM PECOSA
+        WHERE CODIGO=#{codigo}
+    </select>
 </mapper>

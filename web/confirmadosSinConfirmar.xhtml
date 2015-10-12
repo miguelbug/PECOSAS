@@ -63,7 +63,7 @@
                                     </h:outputText>
                                 </p:column>
                                 <f:facet name="footer">
-                                    <p:commandButton process="vistaSinConfirm" value="Confirmar" update=":form:tab" action="#{distribucionBean.confirmar()}"  icon="ui-icon-check"/>
+                                    <p:commandButton process="vistaSinConfirm" value="Confirmar" update=":form:confirmarDialog" oncomplete="PF('ConfirmarDialog').show()"  icon="ui-icon-check"/>
                                 </f:facet>
                             </p:dataTable>
                         </p:tab>
@@ -84,7 +84,7 @@
                                     <h:outputText value="#{codi.codigo}" >
                                     </h:outputText>
                                 </p:column>
-                                <p:column headerText="FECHA" filterBy="#{codi.fecha}" filterMatchMode="contains" style="width: 7%">
+                                <p:column headerText="FECHA" filterBy="#{codi.fecha}" filterMatchMode="contains" style="width: 9%">
                                     <h:outputText value="#{codi.fecha}" >
                                     </h:outputText>
                                 </p:column>
@@ -92,11 +92,11 @@
                                     <h:outputText value="#{codi.bien}" >
                                     </h:outputText>
                                 </p:column>
-                                <p:column headerText="CANTIDAD"  style="width: 5%">
+                                <p:column headerText="CANT."  style="width: 3%">
                                     <h:outputText value="#{codi.cantidad}" >
                                     </h:outputText>
                                 </p:column>
-                                <p:column headerText="PREC. UNIT." style="width: 8%">
+                                <p:column headerText="PREC. UNIT." style="width: 6%">
                                     <h:outputText value="#{codi.precioUnit}" >
                                     </h:outputText>
                                 </p:column>
@@ -242,6 +242,18 @@
                                     </h:outputText>
                                 </p:column>
                             </p:dataTable>
+                        </center>
+                    </p:dialog>
+                    <p:dialog header="Confirmar" modal="true" showEffect="fade" widgetVar="ConfirmarDialog" hideEffect="fade" resizable="false" position="center center" id="confirmarDialog" closeOnEscape="true">
+                        <center>
+                            <h:panelGrid columns="2" cellpadding="4">
+                                <p:outputLabel value="N° Pecosa: "/>
+                                <p:inputText value="#{distribucionBean.codigopecosa}"/>
+                            </h:panelGrid>
+                            <br></br>
+                            <p:commandButton value="Confirmar" actionListener="#{distribucionBean.confirmar()}" icon="ui-icon-check" title="Confirmar" update=":form:">
+                                <f:ajax event="click" onevent="ConfirmarDialog.hide()"/>
+                            </p:commandButton>
                         </center>
                     </p:dialog>
                 </h:form>

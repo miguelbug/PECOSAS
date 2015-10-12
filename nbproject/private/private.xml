@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="1">
+        <file>
+            <url>src/java/pecosa/dao/VistaDao.java</url>
+            <bookmark id="1">
+                <name/>
+                <line>23</line>
+                <key/>
+            </bookmark>
+        </file>
+    </editor-bookmarks>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/C:/Users/OGPL/Desktop/GESTION_PROYECTOS/PECOSAS/src/java/pecosa/data/Confirmados.xml</file>
+            <file>file:/C:/Users/OGPL/Desktop/GESTION_PROYECTOS/PECOSAS/src/java/pecosa/bean/DistribucionBean.java</file>
+            <file>file:/C:/Users/OGPL/Desktop/GESTION_PROYECTOS/PECOSAS/src/java/pecosa/data/Vista_Data.xml</file>
+            <file>file:/C:/Users/OGPL/Desktop/GESTION_PROYECTOS/PECOSAS/src/java/configuracion.properties</file>
+            <file>file:/C:/Users/OGPL/Desktop/GESTION_PROYECTOS/PECOSAS/src/java/pecosa/daoImpl/VistaDaoImpl.java</file>
+            <file>file:/C:/Users/OGPL/Desktop/GESTION_PROYECTOS/PECOSAS/web/confirmadosSinConfirmar.xhtml</file>
+            <file>file:/C:/Users/OGPL/Desktop/GESTION_PROYECTOS/PECOSAS/src/java/pecosa/data/Listas_Generales.xml</file>
+            <file>file:/C:/Users/OGPL/Desktop/GESTION_PROYECTOS/PECOSAS/src/java/pecosa/daoImpl/ConfirmadosDaoImpl.java</file>
+            <file>file:/C:/Users/OGPL/Desktop/GESTION_PROYECTOS/PECOSAS/src/java/pecosa/model/ProductoVista.java</file>
+            <file>file:/C:/Users/OGPL/Desktop/GESTION_PROYECTOS/PECOSAS/src/java/pecosa/data/Distribuidos.xml</file>
+        </group>
+    </open-files>
+</project-private>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="UsuarioData">
+
+    <resultMap id="result" type="pecosa.model.Usuario">
+        <result property="idUsuario" column="IDUSU"/>
+        <result property="usuario" column="USUARIO"/>
+        <result property="clave" column="CLAVE"/>
+        <result property="estado" column="ESTADO"/>
+        <result property="nombre" column="NOMBRE"/>
+    </resultMap>
+    
+    <select id="getUsuario" resultMap="result" parameterType="java.util.Map" >
+        SELECT U.ID_USUARIO AS IDUSU,
+                U.NOMBRE_USUARIO AS USUARIO, 
+               U.CLAVE AS CLAVE, 
+               U.ESTADO AS ESTADO, 
+               P.NOMBRES||' '||P.APELLIDOS AS NOMBRE
+        FROM USUARIO U, PERSONA P
+        WHERE U.ID_PERSONA=P.ID_PERSONA
+        AND U.NOMBRE_USUARIO=#{usuario}
+        AND U.CLAVE=#{clave}
+        AND U.ESTADO='activo'
+    </select>
+
+</mapper>

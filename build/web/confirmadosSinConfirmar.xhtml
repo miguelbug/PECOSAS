@@ -1,0 +1,251 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>GESTION PECOSAS</title>
+        <link rel="stylesheet" type="text/css" href="resources/css2/estilos.css" />
+    </h:head>
+    <h:body>
+        <ui:composition template="./menucentral.xhtml">
+            <ui:define name="content">
+                <h:form id="form">
+                    <br></br>
+                    <p:tabView dynamic="true" id="tab">
+                        <p:ajax event="tabChange" listener="#{distribucionBean.onTabChange}" update=":form:tab"/>
+                        <p:tab title="SIN CONFIRMAR" id="tab1" >
+                            <p:dataTable value="#{distribucionBean.lista}" var="codi" id="vistaSinConfirm" emptyMessage="SIN DATOS PARA MOSTRAR" rows="20"
+                                         paginator="true" selection="#{distribucionBean.productosSelec}" rowKey="#{codi.idVista}" filteredValue="#{distribucionBean.filtroProducto}"
+                                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+
+                                <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
+                                <p:column headerText="N°" style="width: 3%;text-align: center; display: none">
+                                    <h:outputText value="#{codi.idVista}" >
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="CODIGO" filterBy="#{codi.codigo}" style="width: 7%;text-align: center">
+                                    <h:outputText value="#{codi.codigo}" >
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="FECHA" filterBy="#{codi.fecha}" filterMatchMode="contains">
+                                    <h:outputText value="#{codi.fecha}" >
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="BIEN" filterBy="#{codi.bien}" filterMatchMode="contains" style="width: 30%">
+                                    <h:outputText value="#{codi.bien}" >
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="UNIDAD" filterBy="#{codi.unidad}" filterMatchMode="contains" style="width: 7%">
+                                    <h:outputText value="#{codi.unidad}" >
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="MARCA" filterBy="#{codi.marca}" filterMatchMode="contains">
+                                    <h:outputText value="#{codi.marca}" >
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="CANTIDAD"  style="width: 5%">
+                                    <h:outputText value="#{codi.cantidad}" >
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="PREC. UNIT." style="width: 8%">
+                                    <h:outputText value="#{codi.precioUnit}" >
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="SERIE" filterBy="#{codi.serie}" filterMatchMode="contains">
+                                    <h:outputText value="#{codi.serie}" >
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="DETALLE">
+                                    <h:outputText value="#{codi.detalle}" >
+                                    </h:outputText>
+                                </p:column>
+                                <f:facet name="footer">
+                                    <p:commandButton process="vistaSinConfirm" value="Confirmar" update=":form:tab" action="#{distribucionBean.confirmar()}"  icon="ui-icon-check"/>
+                                </f:facet>
+                            </p:dataTable>
+                        </p:tab>
+                        <p:tab title="CONFIRMADOS" id="tab2">
+                            <p:dataTable value="#{distribucionBean.listaConfirmados}" var="codi" id="productosConfirm" emptyMessage="SIN DATOS PARA MOSTRAR" rows="20" editable="true"
+                                         paginator="true" selection="#{distribucionBean.confirmSeleccionados}" rowKey="#{codi.idNumero}" filteredValue="#{distribucionBean.confirmFiltro}"
+                                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+
+                                <p:ajax event="rowEdit" listener="#{distribucionBean.onRowEdit}"  />
+                                <p:ajax event="rowEditCancel" listener="#{distribucionBean.onRowCancel}"  />
+
+                                <p:column selectionMode="Single" style="width:16px;text-align:center"/>
+                                <p:column headerText="N°" style="display: none">
+                                    <h:outputText value="#{codi.idNumero}" >
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="CODIGO" filterBy="#{codi.codigo}" style="width: 5.5%;text-align: center">
+                                    <h:outputText value="#{codi.codigo}" >
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="FECHA" filterBy="#{codi.fecha}" filterMatchMode="contains" style="width: 7%">
+                                    <h:outputText value="#{codi.fecha}" >
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="BIEN" filterBy="#{codi.bien}" filterMatchMode="contains" style="width: 30%">
+                                    <h:outputText value="#{codi.bien}" >
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="CANTIDAD"  style="width: 5%">
+                                    <h:outputText value="#{codi.cantidad}" >
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="PREC. UNIT." style="width: 8%">
+                                    <h:outputText value="#{codi.precioUnit}" >
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="SERIE" style="width: 6%">
+                                    <h:outputText value="#{codi.serie}">
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="SBN" style="width: 8%" filterBy="#{codi.sbn}" filterMatchMode="contains" >
+                                    <p:cellEditor>
+                                        <f:facet name="output"><h:outputText value="#{codi.sbn}" /></f:facet>
+                                        <f:facet name="input"><p:inputText value="#{codi.sbn}"/></f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+                                <p:column style="width:32px;text-align: center">
+                                    <p:commandButton update=":form:DialogDetallProdVista" oncomplete="PF('DetallProdVistaDialog').show()" icon="ui-icon-search" title="Detalle">
+                                        <f:setPropertyActionListener value="#{codi}" target="#{distribucionBean.confirmSeleccionados2}" />
+                                    </p:commandButton>
+                                </p:column>
+                                <p:column style="width:32px">
+                                    <p:rowEditor />
+                                </p:column>
+                                <f:facet name="footer">
+                                    <p:commandButton process="productosConfirm" value="Distribuir" update=":form:distribDialog" icon="ui-icon-check" oncomplete="PF('DistribDialog').show()"
+                                                     action="#{distribucionBean.llenar()}"/>
+                                </f:facet>
+                            </p:dataTable>
+                        </p:tab>
+                        <p:tab title="DISTRIBUIDOS" id="tab3">
+                            <p:dataTable value="#{distribucionBean.listaDistrib}" var="codi" id="productosDistribuidos" emptyMessage="SIN DATOS PARA MOSTRAR" rows="20"
+                                         paginator="true" rowKey="#{codi.idNumero}" filteredValue="#{distribucionBean.filtro}" editable="true"
+                                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+
+                                <p:ajax event="rowEdit" listener="#{distribucionBean.onRowEdit2}" />
+                                <p:ajax event="rowEditCancel" listener="#{distribucionBean.onRowCancel2}" />
+
+                                <p:column selectionMode="Single" style="width:16px;text-align:center"/>
+                                <p:column headerText="N°" style="display: none">
+                                    <h:outputText value="#{codi.idNumero}" >
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="CODIGO" filterBy="#{codi.codigo}" style="width: 7%;text-align: center">
+                                    <h:outputText value="#{codi.codigo}" >
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="BIEN" filterBy="#{codi.bien}" filterMatchMode="contains" style="width: 30%">
+                                    <h:outputText value="#{codi.bien}" >
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="DESTINO" filterBy="#{codi.destino}" filterMatchMode="contains" style="width: 25%">
+                                    <h:outputText value="#{codi.destino}" >
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="CANTIDAD"  style="width: 5%;text-align: center">
+                                    <h:outputText value="#{codi.cantidad}" >
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="FECHA" filterBy="#{codi.fecha_dist}" style="width: 10%" filterMatchMode="contains">
+                                    <h:outputText value="#{codi.fecha_dist}" >
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="SBN" style="width: 8%" filterBy="#{codi.sbn}" filterMatchMode="contains">
+                                    <p:cellEditor>
+                                        <f:facet name="output"><h:outputText value="#{codi.sbn}" /></f:facet>
+                                        <f:facet name="input"><p:inputText value="#{codi.sbn}"/></f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+                                <p:column headerText="SERIE" filterBy="#{codi.serie}" filterMatchMode="contains">
+                                    <h:outputText value="#{codi.serie}" >
+                                    </h:outputText>
+                                </p:column>
+                                <p:column style="width:32px;text-align: center">
+                                    <p:commandButton update=":form:DialogDetallProd" oncomplete="PF('DetallProdDialog').show()" icon="ui-icon-search" title="Detalle">
+                                        <f:setPropertyActionListener value="#{codi}" target="#{distribucionBean.seleccionado}" />
+                                    </p:commandButton>
+                                </p:column>
+                                <p:column style="width:32px">
+                                    <p:rowEditor />
+                                </p:column>
+                            </p:dataTable>
+                        </p:tab>
+                    </p:tabView>
+                    <p:dialog header="Detalle Producto" widgetVar="DetallProdDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" position="center center" id="DialogDetallProd" width="1200">
+                        <center>
+                            <h:outputLabel value="Detalle del Producto: "/>
+                            <br></br>
+                            <br></br>
+                            <p:dataTable value="#{distribucionBean.seleccionado}" var="codi">
+                                <p:column headerText="PREC. UNIT." style="width: 10%">
+                                    <h:outputText value="#{codi.precio}">
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="UNIDAD" style="width: 15%">
+                                    <h:outputText value="#{codi.unidad}" >
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="MARCA">
+                                    <h:outputText value="#{codi.marca}" >
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="DETALLE">
+                                    <h:outputText value="#{codi.detalle}" style="width: 60%" >
+                                    </h:outputText>
+                                </p:column>
+                            </p:dataTable>
+                        </center>
+                    </p:dialog>
+                    <p:dialog header="Distribucion" modal="true" showEffect="fade" widgetVar="DistribDialog" hideEffect="fade" resizable="false" position="center center" id="distribDialog" closeOnEscape="true">
+                        <center>
+                            <h:panelGrid columns="2">
+                                <p:outputLabel value="Oficina Destino: "/>
+                                <p:selectOneMenu value="#{distribucionBean.destino}">
+                                    <f:selectItem itemLabel="Seleccione" itemValue=" "/>
+                                    <f:selectItems value="#{distribucionBean.listaDepe}"/>
+                                </p:selectOneMenu>
+                                <p:outputLabel value="Cantidad: "/>
+                                <p:selectOneMenu value="#{distribucionBean.cantidad}">
+                                    <f:selectItem itemLabel="Seleccione" itemValue=" "/>
+                                    <f:selectItems value="#{distribucionBean.cantidades}"/>
+                                </p:selectOneMenu>
+                            </h:panelGrid>
+                            <br></br>
+                            <p:commandButton value="Repartir" actionListener="#{distribucionBean.distribuir()}" title="Distribuir" update=":form:">
+                                <f:ajax event="click" onevent="DistribDialog.hide()"/>
+                            </p:commandButton>
+                        </center>
+                    </p:dialog>
+                    <p:dialog header="Detalle Producto" widgetVar="DetallProdVistaDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" position="center center" id="DialogDetallProdVista" width="1200">
+                        <center>
+                            <h:outputLabel value="Detalle del Producto: "/>
+                            <br></br>
+                            <br></br>
+                            <p:dataTable value="#{distribucionBean.confirmSeleccionados2}" var="codi">
+                                <p:column headerText="UNIDAD" style="width: 15%">
+                                    <h:outputText value="#{codi.unidad}" >
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="MARCA">
+                                    <h:outputText value="#{codi.marca}" >
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="DETALLE">
+                                    <h:outputText value="#{codi.detalle}" style="width: 60%" >
+                                    </h:outputText>
+                                </p:column>
+                            </p:dataTable>
+                        </center>
+                    </p:dialog>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="VistaData">
+
+    <resultMap id="result" type="pecosa.model.ProductoVista">
+        <result property="idVista" column="IDVISTA"/>
+        <result property="destino" column="DESTINO"/>
+        <result property="codigo" column="NUMERO"/>
+        <result property="direccion" column="DIRECCION"/>
+        <result property="fecha" column="FECHA_CREACION"/>
+        <result property="bien" column="BIEN"/>
+        <result property="unidad" column="UNIDAD"/>
+        <result property="marca" column="MARCA"/>
+        <result property="cantidad" column="CANTIDAD"/>
+        <result property="precioUnit" column="PRECIO"/>
+        <result property="serie" column="SERIE"/>
+        <result property="detalle" column="DETALLE"/>
+    </resultMap>
+    
+    <resultMap id="result2" type="Integer">
+        <result property="id_numero" column="IDNUMERO"/>
+    </resultMap>
+    
+    <resultMap id="result3" type="Integer">
+        <result property="codigoDep" column="CODIGO"/>
+    </resultMap>
+    
+    <select id="getProdVista" resultMap="result">
+        SELECT  NUMERO||'-'||CANTIDAD||'-'||BIEN AS IDVISTA,
+        NUMERO AS NUMERO,
+        DESTINO AS DESTINO,
+        DIRECCION AS DIRECCION,
+        TO_CHAR(FECHA_CREA,'DD/MM/YYYY HH:mm:ss') AS FECHA_CREACION,
+        BIEN AS BIEN,
+        UNIDAD AS UNIDAD,
+        MARCA AS MARCA, 
+        CANTIDAD AS CANTIDAD,
+        PRECIO AS PRECIO,
+        DECODE(SERIE,NULL,'SIN SERIE',SERIE) AS SERIE,
+        DECODE(DETALLE,NULL,'SIN DET.',DETALLE) AS DETALLE 
+        FROM QPLOGISTICA.PECOSAS_PLANI@PECOSADBLINK
+        WHERE NUMERO||BIEN NOT IN (SELECT CODIGO||BIEN FROM PRODUCTOS_OGPL)
+        ORDER BY FECHA_CREA DESC
+    </select>
+    <select id="getIdProdInterno" resultMap="result2" parameterType="java.util.Map">
+        SELECT ID_NUMERO AS IDNUMERO
+        FROM PRODUCTOS_OGPL
+        WHERE FECHA_CREACION=#{fecha}
+        AND BIEN = #{bien}
+        AND CODIGO = #{codigo}
+    </select>
+    
+    <select id="getIdDepe" resultMap="result3" parameterType="String">
+        SELECT CODIGO AS CODIGO
+        FROM DEPENDENCIA 
+        WHERE NOMBRE = #{nombre}
+    </select>
+   
+    
+    <insert id="insert_productos" parameterType="pecosa.model.GuardarProducto">
+        INSERT INTO PRODUCTOS_OGPL (DIRECCION,FECHA_CREACION,BIEN,UNIDAD,MARCA,PRECIO,SERIE,DETALLE,CODIGO)
+                       VALUES (#{direccion},#{fecha_crea},#{bien},#{unidad},#{marca},#{precio},#{serie},#{detalle},#{codigo})
+    </insert>
+    <insert id="insert_origen" parameterType="pecosa.model.GuardarDistribucion">
+        INSERT INTO DISTRIBUCION (CANTIDAD,FECHA,ID_NUMERO,CODIGO,ID_USUARIO)
+        VALUES (#{cantidad},#{fecha},#{id_numero},#{codigo},#{id_usuario})
+    </insert>
+
+</mapper>

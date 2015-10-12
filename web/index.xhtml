@@ -1,0 +1,60 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>GESTION PECOSAS - OGPL</title>
+        <link rel="stylesheet" type="text/css" href="resources/css2/estilos.css" />
+        <script language="JavaScript" src="./resources/js/caducarSesiones.js" type="text/javascript"/>
+    </h:head> 
+    <h:body>
+        <!--<img src="image/banner3.jpg" style=" width: 100%"/>-->
+        <p:graphicImage url="/image/banner3.jpg" width="100%"/>
+        <h:form style="width:30%;height:100%;margin:auto" id="form">
+            <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+            <center>
+                <br></br>
+                <br></br>
+                <br></br><br></br>
+                <p:panel id="basic" header=" OFICINA GENERAL DE PLANIFICACIÓN" >
+                    <h:panelGrid columns="2" id="panelLogin" cellspacing="10" border="0">
+                        <p:outputLabel value="Usuario:" style="font-size:small;"/>
+                        <p:inputText value="#{loginBean.usuario}"/>
+                        <p:outputLabel value="Contraseña" style="font-size:small;"/>
+                        <p:password value="#{loginBean.pass}"/>
+                    </h:panelGrid>
+                    <br></br>
+                    <center>
+                        <p:commandButton value="Ingresar" action="#{loginBean.actionLogin()}" update=":form:"/>
+                        <p:dialog id="status" widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                            <p:graphicImage url="/image/progress_bar.gif" />
+                        </p:dialog>
+                    </center>
+                </p:panel>
+            </center>
+            <p:dialog id="validacion2" widgetVar="val2" closeOnEscape="true" modal="true" showEffect="fade" hideEffect="fade" resizable="false" position="center center">
+                <center>
+                    <p:outputLabel value="NO EXISTE USUARIO/CLAVE INCORRECTA"/>
+                </center>
+            </p:dialog>
+            <p:dialog id="validacion3" widgetVar="val3" closeOnEscape="true" modal="true" showEffect="fade" hideEffect="fade" resizable="false" position="center center">
+                <center>
+                    <p:outputLabel value="!!!DEBE LLENAR TODOS LOS CAMPOS¡¡¡"/>
+                </center>
+            </p:dialog>
+            <p:idleMonitor onidle="PF('sessionTimeOutDialog').show()" timeout="1800000"/><!-- control del timeout-->
+        </h:form>
+        <!-- Inicio control del timeout -->
+        <p:dialog header="SESIÓN CADUCADA" widgetVar="sessionTimeOutDialog" modal="true" closable="false" width="400" visible="false">
+            <h:form>
+                <center>
+                    <h:outputText value="Su sesión ha caducado, pulse el botón para reiniciar su sesión." /><br />
+                    <input type="submit" value="Reiniciar" onclick="setTimeout('redireccionar()', 0);"/>
+                </center>
+            </h:form>
+        </p:dialog>
+        <!-- Fin control del timeout -->
+    </h:body>
+</html>
+

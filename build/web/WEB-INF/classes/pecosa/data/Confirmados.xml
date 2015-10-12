@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Confirmados">
+
+    <resultMap id="result" type="pecosa.model.ProductosConfirmados">
+        <result property="idNumero" column="IDNUMERO"/>
+        <result property="destino" column="DESTINO"/>
+        <result property="codigo" column="NUMERO"/>
+        <result property="direccion" column="DIRECCION"/>
+        <result property="fecha" column="FECHA"/>
+        <result property="bien" column="BIEN"/>
+        <result property="unidad" column="UNIDAD"/>
+        <result property="marca" column="MARCA"/>
+        <result property="cantidad" column="CANTIDAD"/>
+        <result property="precioUnit" column="PRECIO"/>
+        <result property="serie" column="SERIE"/>
+        <result property="detalle" column="DETALLE"/>
+        <result property="idDistrib" column="IDDISTRIB"/>
+        <result property="sbn" column="SBN"/>
+    </resultMap>
+    
+    <resultMap id="result2" type="pecosa.model.VerificarDistribucion">
+        <result property="id_distribucion" column="IDDISTRIB"/>
+        <result property="id_usuario" column="IDUSUARIO"/>
+        <result property="codigo" column="CODIGO"/>
+        <result property="id_numero" column="IDNUMERO"/>
+        <result property="fecha" column="FECHA"/>
+        <result property="cantidad" column="CANTIDAD"/>
+    </resultMap>
+    
+    <select id="getProdConfirm" resultMap="result">
+        SELECT PO.ID_NUMERO AS IDNUMERO,
+        PO.DIRECCION AS DIRECCION,
+        TO_CHAR(PO.FECHA_CREACION,'DD/MM/YYYY HH:mm:ss') AS FECHA,
+        PO.BIEN AS BIEN,
+        PO.UNIDAD AS UNIDAD,
+        PO.MARCA AS MARCA,
+        PO.PRECIO AS PRECIO,
+        PO.SERIE AS SERIE,
+        PO.DETALLE AS DETALLE,
+        DECODE(PO.SBN,NULL,'SIN SBN',PO.SBN) AS SBN,
+        PO.CODIGO AS CODIGO,
+        DE.NOMBRE AS DESTINO,
+        D.CANTIDAD AS CANTIDAD,
+        D.ID_DISTRIBUCION AS IDDISTRIB
+
+        FROM PRODUCTOS_OGPL PO, DISTRIBUCION D, DEPENDENCIA DE
+        WHERE PO.ID_NUMERO = D.ID_NUMERO
+        AND D.CODIGO = DE.CODIGO
+        AND DE.CODIGO = '100392'
+        AND D.CANTIDAD > 0
+        ORDER BY PO.FECHA_CREACION DESC
+    </select>
+    
+    <select id="verifDistrib" resultMap="result2" parameterType="java.util.Map">
+        SELECT ID_DISTRIBUCION AS IDDISTRIB,
+        CANTIDAD AS CANTIDAD,
+        TO_CHAR(FECHA,'DD/MM/YYYY HH:mm:ss') as FECHA,
+        ID_NUMERO AS IDNUMERO,
+        CODIGO AS CODIGO,
+        ID_USUARIO AS IDUSUARIO
+        FROM DISTRIBUCION
+        WHERE ID_NUMERO = #{idnumero}
+        AND CODIGO = #{iddependencia}
+    </select>
+    
+    <insert id="guardar_distrib" parameterType="pecosa.model.GuardarDistribucion">
+        INSERT INTO DISTRIBUCION (CANTIDAD,FECHA,ID_NUMERO,CODIGO,ID_USUARIO)
+        VALUES (#{cantidad},#{fecha},#{id_numero},#{codigo},#{id_usuario})
+    </insert>
+    
+    <update id="update_distrib" parameterType="java.util.Map">
+        UPDATE DISTRIBUCION
+        SET
+        CANTIDAD = #{cantidad}
+        WHERE ID_DISTRIBUCION = #{idDistrib}
+    </update>
+    
+    <update id="update_sbn" parameterType="java.util.Map">
+        UPDATE PRODUCTOS_OGPL
+        SET
+        SBN = #{sbn}
+        WHERE ID_NUMERO = #{idnumero}
+    </update>
+    
+    <update id="update_distrib2" parameterType="pecosa.model.VerificarDistribucion">
+        UPDATE DISTRIBUCION
+        SET
+        CANTIDAD = #{cantidad}
+        WHERE ID_DISTRIBUCION = #{id_distribucion}
+        AND CODIGO = #{codigo}
+        AND ID_NUMERO = #{id_numero}
+    </update>
+    
+</mapper>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Document   : mybatis-config.xml
+    Created on : 26 de Marzo del 2015
+    Author     : Carlos Bravo
+    Description:
+        GESTION DE PROYECTOS.
+-->
+<!DOCTYPE configuration
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <properties resource="configuracion.properties"/>
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${driver}"/>
+                <property name="url" value="${url}"/>
+                <property name="username" value="${username}"/>
+                <property name="password" value="${password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <mappers>
+        <mapper resource="pecosa/data/UsuarioData.xml"/>
+        <mapper resource="pecosa/data/Vista_Data.xml"/>
+        <mapper resource="pecosa/data/Confirmados.xml"/>
+        <mapper resource="pecosa/data/Listas_Generales.xml"/>
+        <mapper resource="pecosa/data/Distribuidos.xml"/>
+    </mappers>
+</configuration>

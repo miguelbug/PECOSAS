@@ -159,14 +159,12 @@ public class DistribucionBean implements Serializable {
                 gp.setDetalle(productosSelec.get(i).getDetalle());
                 gp.setCodigo(Integer.parseInt(productosSelec.get(i).getCodigo()));
                 vistaD.confirmarProductos_1(gp);
-                
                 gd.setId_numero(vistaD.getIdProductoInterno(gp.getFecha_crea(), gp.getBien(), gp.getCodigo()));
                 gd.setCantidad(Integer.parseInt(productosSelec.get(i).getCantidad()));
                 gd.setFecha(transfFecha(productosSelec.get(i).getFecha()));
                 gd.setCodigo(vistaD.getIdDependencia(productosSelec.get(i).getDestino()));
                 gd.setId_usuario(usu.getIdUsuario());
                 vistaD.confirmarProductos_2(gd);
-                
                 PecosaProductos pp = new PecosaProductos();
                 pp.setIdpecosa(confirm.getIdPecosa(p));
                 pp.setIdproducto(confirm.getIdProductos(gp));

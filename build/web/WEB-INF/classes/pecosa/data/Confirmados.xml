@@ -117,11 +117,9 @@
         SELECT ID_NUMERO AS IDPRODUCTO
         FROM PRODUCTOS_OGPL
         WHERE DIRECCION=#{direccion}
-        AND FECHA_CREACION=#{fecha_crea}
         AND BIEN=#{bien}
         AND UNIDAD=#{unidad}
         AND MARCA=#{marca}
-        AND PRECIO=#{precio}
         AND SERIE=#{serie}
         AND DETALLE=#{detalle}
         AND CODIGO=#{codigo}

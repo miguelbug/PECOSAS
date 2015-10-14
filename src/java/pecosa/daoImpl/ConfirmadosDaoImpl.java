@@ -159,7 +159,6 @@ public class ConfirmadosDaoImpl implements ConfirmadosDao {
         } finally {
             session.close();
         }
-        System.out.println(idproductos);
         return idproductos;
     }
 
@@ -175,7 +174,6 @@ public class ConfirmadosDaoImpl implements ConfirmadosDao {
         } finally {
             session.close();
         }
-        System.out.println(idpecosa);
         return idpecosa;
     }
 

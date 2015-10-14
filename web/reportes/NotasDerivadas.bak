@@ -1,0 +1,524 @@
+<?xml version="1.0" encoding="UTF-8"  ?>
+<!-- Created with iReport - A designer for JasperReports -->
+<!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
+<jasperReport
+		 name="NotasDerivadas"
+		 columnCount="1"
+		 printOrder="Horizontal"
+		 orientation="Portrait"
+		 pageWidth="595"
+		 pageHeight="840"
+		 columnWidth="535"
+		 columnSpacing="0"
+		 leftMargin="30"
+		 rightMargin="30"
+		 topMargin="20"
+		 bottomMargin="20"
+		 whenNoDataType="NoPages"
+		 isTitleNewPage="false"
+		 isSummaryNewPage="false">
+	<property name="ireport.scriptlethandling" value="0" />
+	<property name="ireport.encoding" value="UTF-8" />
+	<import value="java.util.*" />
+	<import value="net.sf.jasperreports.engine.*" />
+	<import value="net.sf.jasperreports.engine.data.*" />
+
+	<parameter name="logo" isForPrompting="false" class="java.lang.String">
+		<defaultValueExpression ><![CDATA["escudo_reporte.jpg"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="usuario" isForPrompting="false" class="java.lang.String">
+		<defaultValueExpression ><![CDATA["parametroUsuario"]]></defaultValueExpression>
+	</parameter>
+	<queryString><![CDATA[SELECT D.NOMBRE AS DESTINO,
+       P.CODIGO AS NUMPECOSA,
+       TO_CHAR(DIST.FECHA,'DD/MM/YYYY HH:mm:ss') AS FECHADIST,
+       PO.BIEN AS BIEN,
+       DIST.CANTIDAD AS CANTIDAD,
+       PO.MARCA AS MARCA
+       
+FROM PECOSA P, PRODUCTOS_OGPL PO, PECOSA_PRODUCTOS PPO, DISTRIBUCION DIST, DEPENDENCIA D
+WHERE P.ID_PECOSA=PPO.ID_PECOSA
+  AND PO.ID_NUMERO=PPO.ID_NUMERO
+  AND DIST.CODIGO=D.CODIGO
+  AND PO.ID_NUMERO=DIST.ID_NUMERO
+  AND D.CODIGO NOT IN('100392')
+ORDER BY D.NOMBRE]]></queryString>
+
+	<field name="DESTINO" class="java.lang.String"/>
+	<field name="NUMPECOSA" class="java.lang.String"/>
+	<field name="FECHADIST" class="java.lang.String"/>
+	<field name="BIEN" class="java.lang.String"/>
+	<field name="CANTIDAD" class="java.lang.String"/>
+	<field name="MARCA" class="java.lang.String"/>
+
+	<variable name="fecha" class="java.util.Date" resetType="Report" calculation="Nothing">
+		<variableExpression><![CDATA[new Date()]]></variableExpression>
+		<initialValueExpression><![CDATA[new Date()]]></initialValueExpression>
+	</variable>
+
+		<group  name="porOficina" isStartNewPage="true" >
+			<groupExpression><![CDATA[$F{DESTINO}]]></groupExpression>
+			<groupHeader>
+			<band height="63"  isSplitAllowed="true" >
+				<staticText>
+					<reportElement
+						x="148"
+						y="44"
+						width="184"
+						height="18"
+						key="staticText-6"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="7" isBold="true"/>
+					</textElement>
+				<text><![CDATA[BIEN]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="7"
+						y="44"
+						width="80"
+						height="19"
+						key="staticText-9"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="7" isBold="true"/>
+					</textElement>
+				<text><![CDATA[FECHA]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="437"
+						y="45"
+						width="93"
+						height="18"
+						forecolor="#000000"
+						backcolor="#000000"
+						key="staticText-10"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="7" isBold="true"/>
+					</textElement>
+				<text><![CDATA[FIRMA DE CONFORMIDAD]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="8"
+						y="4"
+						width="522"
+						height="15"
+						key="textField-13"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[" OFICINA INTERNA:   "+$F{DESTINO}]]></textFieldExpression>
+				</textField>
+				<line direction="TopDown">
+					<reportElement
+						x="8"
+						y="62"
+						width="524"
+						height="0"
+						key="line-7"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="8"
+						y="44"
+						width="524"
+						height="0"
+						key="line-8"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<staticText>
+					<reportElement
+						x="333"
+						y="45"
+						width="47"
+						height="17"
+						key="staticText-13"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="7" isBold="true"/>
+					</textElement>
+				<text><![CDATA[CANTIDAD]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="380"
+						y="45"
+						width="56"
+						height="17"
+						key="staticText-14"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="7" isBold="true"/>
+					</textElement>
+				<text><![CDATA[MARCA]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="88"
+						y="45"
+						width="60"
+						height="17"
+						key="staticText-15"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="7" isBold="true"/>
+					</textElement>
+				<text><![CDATA[N° DE PECOSA]]></text>
+				</staticText>
+			</band>
+			</groupHeader>
+			<groupFooter>
+			<band height="32"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="484"
+						y="12"
+						width="44"
+						height="11"
+						key="textField-15"/>
+					<box></box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA["Total: "+$V{PAGE_COUNT}]]></textFieldExpression>
+				</textField>
+			</band>
+			</groupFooter>
+		</group>
+		<background>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</background>
+		<title>
+			<band height="21"  isSplitAllowed="true" >
+			</band>
+		</title>
+		<pageHeader>
+			<band height="49"  isSplitAllowed="true" >
+				<staticText>
+					<reportElement
+						x="0"
+						y="1"
+						width="285"
+						height="14"
+						key="staticText-1"/>
+					<box></box>
+					<textElement>
+						<font pdfFontName="Helvetica-Bold" isBold="true"/>
+					</textElement>
+				<text><![CDATA[UNMSM - SISTEMA DE GESTION DE PECOSAS OGPL]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="1"
+						y="32"
+						width="528"
+						height="14"
+						key="textField-1"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="11" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA["REPORTE DE BIENES DERIVADOS A OFICINAS INTERNAS "]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="404"
+						y="14"
+						width="33"
+						height="13"
+						key="staticText-3"/>
+					<box></box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+				<text><![CDATA[Usuario:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy   h:mm a" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="439"
+						y="1"
+						width="91"
+						height="13"
+						key="textField-2"/>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+				<textFieldExpression   class="java.util.Date"><![CDATA[$V{fecha}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="440"
+						y="14"
+						width="90"
+						height="13"
+						key="textField-3"/>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{usuario}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="359"
+						y="1"
+						width="78"
+						height="13"
+						key="staticText-4"/>
+					<box></box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+				<text><![CDATA[Fec. Impresion:]]></text>
+				</staticText>
+			</band>
+		</pageHeader>
+		<columnHeader>
+			<band height="17"  isSplitAllowed="true" >
+			</band>
+		</columnHeader>
+		<detail>
+			<band height="23"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="8"
+						y="0"
+						width="79"
+						height="21"
+						key="textField-7"/>
+					<box></box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{FECHADIST}]]></textFieldExpression>
+				</textField>
+				<line direction="TopDown">
+					<reportElement
+						x="531"
+						y="-19"
+						width="0"
+						height="42"
+						key="line-9"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="332"
+						y="-18"
+						width="0"
+						height="41"
+						key="line-11"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="148"
+						y="-18"
+						width="0"
+						height="40"
+						key="line-12"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="7"
+						y="-19"
+						width="0"
+						height="42"
+						key="line-13"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="8"
+						y="22"
+						width="523"
+						height="0"
+						key="line-14"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="436"
+						y="-18"
+						width="0"
+						height="41"
+						key="line-15"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="380"
+						y="-19"
+						width="0"
+						height="42"
+						key="line-16"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="152"
+						y="0"
+						width="179"
+						height="22"
+						key="textField-17"/>
+					<box></box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{BIEN}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="335"
+						y="1"
+						width="42"
+						height="20"
+						key="textField-18"/>
+					<box></box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CANTIDAD}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="383"
+						y="0"
+						width="52"
+						height="21"
+						key="textField-19"/>
+					<box></box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{MARCA}]]></textFieldExpression>
+				</textField>
+				<line direction="TopDown">
+					<reportElement
+						x="88"
+						y="-18"
+						width="0"
+						height="40"
+						key="line-17"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="92"
+						y="0"
+						width="53"
+						height="21"
+						key="textField-20"/>
+					<box></box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{NUMPECOSA}]]></textFieldExpression>
+				</textField>
+			</band>
+		</detail>
+		<columnFooter>
+			<band height="11"  isSplitAllowed="true" >
+			</band>
+		</columnFooter>
+		<pageFooter>
+			<band height="24"  isSplitAllowed="true" >
+				<staticText>
+					<reportElement
+						x="9"
+						y="10"
+						width="288"
+						height="10"
+						key="staticText-5"
+						positionType="FixRelativeToBottom"/>
+					<box></box>
+					<textElement>
+						<font size="7"/>
+					</textElement>
+				<text><![CDATA[Sistema de Gestion de Pecosas - PROYECTOS OGPL]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="429"
+						y="3"
+						width="44"
+						height="11"
+						key="textField-5"/>
+					<box></box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA["Página "+$V{PAGE_NUMBER}.toString()]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Report" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="476"
+						y="3"
+						width="47"
+						height="11"
+						key="textField-6"/>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[" de  "+$V{PAGE_NUMBER}.toString()]]></textFieldExpression>
+				</textField>
+			</band>
+		</pageFooter>
+		<lastPageFooter>
+			<band height="23"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Report" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="475"
+						y="3"
+						width="47"
+						height="11"
+						key="textField-11"/>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[" de  "+$V{PAGE_NUMBER}.toString()]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="429"
+						y="3"
+						width="44"
+						height="11"
+						key="textField-12"/>
+					<box></box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA["Página "+$V{PAGE_NUMBER}.toString()]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="9"
+						y="10"
+						width="288"
+						height="10"
+						key="staticText-12"/>
+					<box></box>
+					<textElement>
+						<font size="7"/>
+					</textElement>
+				<text><![CDATA[Sistema de Gestion de Pecosas - PROYECTOS OGPL ]]></text>
+				</staticText>
+			</band>
+		</lastPageFooter>
+		<summary>
+			<band height="7"  isSplitAllowed="true" >
+			</band>
+		</summary>
+</jasperReport>

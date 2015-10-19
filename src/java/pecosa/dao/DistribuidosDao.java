@@ -17,4 +17,6 @@ import pecosa.model.VerificarDistribucion;
 public interface DistribuidosDao {
     public List<ProductosDistribuidos> getListaDistribuidos();
     public void confirmarSBN(String sbn, Integer idNumero);
+    public Integer getIdPersona(Integer codigo);
+    public Integer getIdPersonaXnombre(Integer codigo, String nombre);
 }

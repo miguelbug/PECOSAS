@@ -39,6 +39,16 @@
         <result property="getIdpecosa" column="IDPECOSA"/>
     </resultMap>
     
+    <resultMap id="result5" type="Integer">
+        <result property="idPersona" column="IDPERSONA"/>
+    </resultMap>
+    
+    <select id="idPersona" resultMap="result5" parameterType="String">
+        SELECT ID_PERSONA AS IDPERSONA
+        FROM USUARIO
+        WHERE NOMBRE_USUARIO=#{nombre}
+    </select>
+    
     <select id="getProdConfirm" resultMap="result">
         SELECT PO.ID_NUMERO AS IDNUMERO,
         PO.DIRECCION AS DIRECCION,
@@ -76,8 +86,8 @@
     </select>
     
     <insert id="guardar_distrib" parameterType="pecosa.model.GuardarDistribucion">
-        INSERT INTO DISTRIBUCION (CANTIDAD,FECHA,ID_NUMERO,CODIGO,ID_USUARIO)
-        VALUES (#{cantidad},#{fecha},#{id_numero},#{codigo},#{id_usuario})
+        INSERT INTO DISTRIBUCION (CANTIDAD,FECHA,ID_NUMERO,CODIGO,ID_USUARIO,ID_PERSONA)
+        VALUES (#{cantidad},#{fecha},#{id_numero},#{codigo},#{id_usuario},#{id_persona})
     </insert>
     
     <insert id="guardar_pecosa" parameterType="pecosa.model.Pecosa">

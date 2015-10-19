@@ -11,6 +11,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import pecosa.connectionFactory.MyBatisConnectionFactory;
 import pecosa.dao.ListasGeneralesDao;
 import pecosa.model.Dependencia;
+import pecosa.model.Persona;
 
 /**
  *
@@ -34,6 +35,22 @@ public class ListasGeneralesDaoImpl implements ListasGeneralesDao {
         SqlSession session = sqlSessionFactory.openSession();
         try {
             lista = session.selectList("ListasGenerales.getDependencias");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            System.out.println("ERROR EN EL IMPL GET PV");
+        } finally {
+            session.close();
+        }
+        return lista;
+    }
+
+    @Override
+    public List<String> getNombrePersonas(Integer codigo) {
+        List<String> lista = null;
+        SqlSession session = sqlSessionFactory.openSession();
+        try {
+            lista = session.selectList("ListasGenerales.getPersonas",codigo);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();

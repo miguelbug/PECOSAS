@@ -24,6 +24,7 @@ public class GuardarDistribucion implements Serializable{
     private Integer id_numero;
     private Integer codigo;
     private Integer id_usuario;
+    private Integer id_persona;
     
     public GuardarDistribucion() {
     }
@@ -66,6 +67,14 @@ public class GuardarDistribucion implements Serializable{
 
     public void setId_usuario(Integer id_usuario) {
         this.id_usuario = id_usuario;
+    }
+
+    public Integer getId_persona() {
+        return id_persona;
+    }
+
+    public void setId_persona(Integer id_persona) {
+        this.id_persona = id_persona;
     }
     
 }

@@ -29,7 +29,7 @@
     </resultMap>
     
     <select id="getProdVista" resultMap="result">
-        SELECT  NUMERO||'-'||CANTIDAD||'-'||BIEN AS IDVISTA,
+        SELECT  ROWNUM||''||NUMERO AS IDVISTA,
         NUMERO AS NUMERO,
         DESTINO AS DESTINO,
         DIRECCION AS DIRECCION,
@@ -65,8 +65,8 @@
                        VALUES (#{direccion},#{fecha_crea},#{bien},#{unidad},#{marca},#{precio},#{serie},#{detalle},#{codigo})
     </insert>
     <insert id="insert_origen" parameterType="pecosa.model.GuardarDistribucion">
-        INSERT INTO DISTRIBUCION (CANTIDAD,FECHA,ID_NUMERO,CODIGO,ID_USUARIO)
-        VALUES (#{cantidad},#{fecha},#{id_numero},#{codigo},#{id_usuario})
+        INSERT INTO DISTRIBUCION (CANTIDAD,FECHA,ID_NUMERO,CODIGO,ID_USUARIO,ID_PERSONA)
+        VALUES (#{cantidad},#{fecha},#{id_numero},#{codigo},#{id_usuario},#{id_persona})
     </insert>
 
 </mapper>

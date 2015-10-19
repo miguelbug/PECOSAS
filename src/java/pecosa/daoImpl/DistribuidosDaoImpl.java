@@ -48,7 +48,7 @@ public class DistribuidosDaoImpl implements DistribuidosDao {
 
     @Override
     public void confirmarSBN(String sbn, Integer idNumero) {
-        System.out.println("SBN: "+sbn+" "+"Idnumero: "+idNumero);
+        System.out.println("SBN: " + sbn + " " + "Idnumero: " + idNumero);
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("sbn", sbn);
         map.put("idnumero", idNumero);
@@ -59,6 +59,40 @@ public class DistribuidosDaoImpl implements DistribuidosDao {
         } finally {
             session.close();
         }
+    }
+
+    @Override
+    public Integer getIdPersona(Integer codigo) {
+        Integer idPersona = null;
+        SqlSession session = sqlSessionFactory.openSession();
+        System.out.println(codigo);
+        try {
+            idPersona = session.selectOne("Distribuidos.idPersona", codigo);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.out.println("ERROR EN Distribuidos.idPersona");
+        } finally {
+            session.close();
+        }
+        return idPersona;
+    }
+
+    @Override
+    public Integer getIdPersonaXnombre(Integer codigo, String nombre) {
+        Integer idPersona = null;
+        SqlSession session = sqlSessionFactory.openSession();
+        Map<String,String> map = new HashMap<String,String>();
+        map.put("codigo", String.valueOf(codigo));
+        map.put("nombre",nombre);
+        try {
+            idPersona = session.selectOne("Distribuidos.idPersonaNombre", map);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.out.println("ERROR EN Distribuidos.idPersona");
+        } finally {
+            session.close();
+        }
+        return idPersona;
     }
 
     public SqlSessionFactory getSqlSessionFactory() {

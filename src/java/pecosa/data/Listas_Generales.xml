@@ -10,12 +10,22 @@
         <result property="nombre" column="NOMBRE"/>
         <result property="siglas" column="SIGLAS"/>
     </resultMap>
+    
+    <resultMap id="result2" type="String">
+        <result property="nombre" column="NOMBRE"/>
+    </resultMap>
  
     <select id="getDependencias" resultMap="result">
         SELECT CODIGO AS CODIGO,
-               NOMBRE AS NOMBRE,
-               SIGLAS AS SIGLAS
+        NOMBRE AS NOMBRE,
+        SIGLAS AS SIGLAS
         FROM DEPENDENCIA
+    </select>
+    
+    <select id="getPersonas" resultMap="result2" parameterType="Integer">
+        SELECT  APELLIDOS||', '||NOMBRES AS NOMBRE
+        FROM PERSONA
+        WHERE CODIGO=#{codigo}
     </select>
     
    

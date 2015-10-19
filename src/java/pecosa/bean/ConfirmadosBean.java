@@ -103,7 +103,6 @@ public class ConfirmadosBean implements Serializable {
         Date date = new Date();
         FacesMessage message = null;
         try {
-            System.out.println("ID NUmero: " + confirmSeleccionados.getIdNumero());
             GuardarDistribucion gd = new GuardarDistribucion();
             gd.setCantidad(Integer.parseInt(cantidad));
             gd.setCodigo(vistaD.getIdDependencia(destino));

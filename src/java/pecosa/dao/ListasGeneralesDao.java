@@ -8,6 +8,7 @@ package pecosa.dao;
 
 import java.util.List;
 import pecosa.model.Dependencia;
+import pecosa.model.Persona;
 
 /**
  *
@@ -15,4 +16,5 @@ import pecosa.model.Dependencia;
  */
 public interface ListasGeneralesDao {
     public List<Dependencia> getListaDependencias();
+    public List<String> getNombrePersonas(Integer codigo);
 }

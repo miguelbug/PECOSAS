@@ -29,4 +29,5 @@ public interface ConfirmadosDao {
     public Integer getIdPecosa(Pecosa p);
     public void guardarPecosa(Pecosa p);
     public void guardarProdPecosa(PecosaProductos pp);
+    public Integer getIdPersona(String nombre);
 }

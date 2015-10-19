@@ -121,6 +121,8 @@
                                 <f:facet name="footer">
                                     <p:commandButton process="productosConfirm" value="Distribuir" update=":form:distribDialog" icon="ui-icon-check" oncomplete="PF('DistribDialog').show()"
                                                      action="#{distribucionBean.llenar()}"/>
+                                    <p:commandButton process="productosConfirm" value="Asignar" style="left: 3%" icon="ui-icon-disk" oncomplete="PF('AsignarDialog').show()" action="#{distribucionBean.llenar2()}"
+                                                     update=":form:asignarDialog"/>
                                 </f:facet>
                             </p:dataTable>
                         </p:tab>
@@ -253,6 +255,30 @@
                             <br></br>
                             <p:commandButton value="Confirmar" actionListener="#{distribucionBean.confirmar()}" icon="ui-icon-check" title="Confirmar" update=":form:">
                                 <f:ajax event="click" onevent="ConfirmarDialog.hide()"/>
+                            </p:commandButton>
+                        </center>
+                    </p:dialog>
+                    <p:dialog header="Asignar" width="600" modal="true" showEffect="fade" widgetVar="AsignarDialog" hideEffect="fade" resizable="false" position="center center" id="asignarDialog" closeOnEscape="true">
+                        <center>
+                            <h:panelGrid columns="2" cellpadding="4">
+                                <p:outputLabel value="Destino: "/>
+                                <p:selectOneMenu value="#{distribucionBean.origenDependencia}">
+                                    <f:selectItem itemLabel="Seleccione" itemValue=""/>
+                                    <f:selectItems value="#{distribucionBean.listaDepe}" id="cantidadDisponible"/>
+                                    <p:ajax event="change" listener="#{distribucionBean.llenarListas()}" update=":form:picklist"/>
+                                </p:selectOneMenu>
+                                <p:outputLabel value="Producto:"/>
+                                <p:outputLabel value="#{distribucionBean.producto}"/> 
+                                <p:outputLabel value="Disponibles: "/>
+                                <p:outputLabel value="#{distribucionBean.cantidadAsign}"/>
+                            </h:panelGrid>
+                            <br></br>
+                            <p:pickList id="picklist" value="#{distribucionBean.asignaciones}" var="asignaciones" itemLabel="#{asignaciones}" itemValue="#{asignaciones}"
+                                        showCheckbox="true" styleClass="picklistCss">
+                            </p:pickList>
+                            <br></br>
+                            <p:commandButton value="Confirmar" icon="ui-icon-check" title="Confirmar" update=":form:" actionListener="#{distribucionBean.asignar()}">
+                                <f:ajax event="click" onevent="AsignarDialog.hide()"/>
                             </p:commandButton>
                         </center>
                     </p:dialog>

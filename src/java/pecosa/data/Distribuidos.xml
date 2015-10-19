@@ -23,7 +23,21 @@
         <result property="fecha_dist" column="FECHA_DIS"/>
     </resultMap>
     
+    <resultMap id="result2" type="Integer">
+        <result property="idPersona" column="IDPERSONA"/>
+    </resultMap>
     
+    <select id="idPersona" resultMap="result2" parameterType="Integer">
+        SELECT ID_PERSONA AS IDPERSONA FROM PERSONA
+        WHERE CODIGO=#{codigo}
+        AND CARGO='JEFE DE OFICINA'
+    </select>
+    
+    <select id="idPersonaNombre" resultMap="result2" parameterType="java.util.Map">
+        SELECT ID_PERSONA AS IDPERSONA FROM PERSONA
+        WHERE CODIGO=#{codigo}
+        AND APELLIDOS||', '||NOMBRES=#{nombre}
+    </select>
     
     <select id="getProdDistrib" resultMap="result">
         SELECT PO.ID_NUMERO AS IDPROD,

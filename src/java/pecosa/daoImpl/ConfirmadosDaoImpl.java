@@ -177,6 +177,21 @@ public class ConfirmadosDaoImpl implements ConfirmadosDao {
         return idpecosa;
     }
 
+    @Override
+    public Integer getIdPersona(String nombre) {
+        Integer idPersona = null;
+        SqlSession session = sqlSessionFactory.openSession();
+        try {
+            idPersona = session.selectOne("Confirmados.idPersona", nombre);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.out.println("ERROR EN Confirmados.idPersona");
+        } finally {
+            session.close();
+        }
+        return idPersona;
+    }
+
     public SqlSessionFactory getSqlSessionFactory() {
         return sqlSessionFactory;
     }

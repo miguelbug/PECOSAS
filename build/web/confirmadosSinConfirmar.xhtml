@@ -258,7 +258,7 @@
                             </p:commandButton>
                         </center>
                     </p:dialog>
-                    <p:dialog header="Asignar" width="600" modal="true" showEffect="fade" widgetVar="AsignarDialog" hideEffect="fade" resizable="false" position="center center" id="asignarDialog" closeOnEscape="true">
+                    <p:dialog dynamic="true" header="Asignar" width="600" modal="true" showEffect="fade" widgetVar="AsignarDialog" hideEffect="fade" resizable="false" position="center center" id="asignarDialog">
                         <center>
                             <h:panelGrid columns="2" cellpadding="4">
                                 <p:outputLabel value="Destino: "/>
@@ -275,11 +275,15 @@
                             <br></br>
                             <p:pickList id="picklist" value="#{distribucionBean.asignaciones}" var="asignaciones" itemLabel="#{asignaciones}" itemValue="#{asignaciones}"
                                         showCheckbox="true" styleClass="picklistCss">
+                                <p:ajax event="transfer" listener="#{distribucionBean.onTransfer}" update="asignar" />
                             </p:pickList>
                             <br></br>
-                            <p:commandButton value="Confirmar" icon="ui-icon-check" title="Confirmar" update=":form:" actionListener="#{distribucionBean.asignar()}">
+                            <br></br>
+                            <p:commandButton id="asignar" value="Confirmar" icon="ui-icon-check" title="Confirmar" update="tab" actionListener="#{distribucionBean.asignar()}" disabled="#{distribucionBean.aparecer2}">
                                 <f:ajax event="click" onevent="AsignarDialog.hide()"/>
                             </p:commandButton>
+                            <br></br>
+                            <br></br>
                         </center>
                     </p:dialog>
                 </h:form>

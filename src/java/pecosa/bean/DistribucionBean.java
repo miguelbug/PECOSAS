@@ -80,8 +80,10 @@ public class DistribucionBean implements Serializable {
     private List<String> destinoLista;
     private int cantidadAsign;
     private String producto;
+    private boolean aparecer2;
 
     public DistribucionBean() {
+        aparecer2 = false;
         vistaD = new VistaDaoImpl();
         origen = new ArrayList<String>();
         destinoLista = new ArrayList<String>();
@@ -101,9 +103,9 @@ public class DistribucionBean implements Serializable {
     }
 
     public void llenarListas() {
-        Integer iddestino = vistaD.getIdDependencia(origenDependencia);
         origen.clear();
         destinoLista.clear();
+        Integer iddestino = vistaD.getIdDependencia(origenDependencia);
         origen = lg.getNombrePersonas(iddestino);
         asignaciones.setSource(origen);
         asignaciones.setTarget(destinoLista);
@@ -171,7 +173,7 @@ public class DistribucionBean implements Serializable {
             gd.setId_persona(confirm.getIdPersona(usu.getUsuario()));
             p.setFecha(date);
             confirm.guardarPecosa(p);
-            System.out.println("SIze: "+productosSelec.size());
+            System.out.println("SIze: " + productosSelec.size());
             for (int i = 0; i < productosSelec.size(); i++) {
                 gp.setDireccion(productosSelec.get(i).getDireccion());
                 gp.setFecha_crea(transfFecha(productosSelec.get(i).getFecha()));
@@ -208,7 +210,6 @@ public class DistribucionBean implements Serializable {
         SimpleDateFormat sfd = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         return sfd.parse(fech);
     }
-    
 
     /////////////////
     /////////////////PARA CONFIRMADOS
@@ -228,8 +229,12 @@ public class DistribucionBean implements Serializable {
 
     public void llenar2() {
         llenarDependencias();
+        origenDependencia="";
         this.cantidadAsign = Integer.parseInt(confirmSeleccionados.getCantidad());
         producto = confirmSeleccionados.getBien();
+        origen.clear();
+        destinoLista.clear();
+        asignaciones = new DualListModel<String>(origen, destinoLista);
     }
 
     public void llenarDependencias() {
@@ -296,12 +301,20 @@ public class DistribucionBean implements Serializable {
         }
     }
 
+    public void onTransfer(TransferEvent event) {
+        System.out.println(Integer.parseInt(confirmSeleccionados.getCantidad()) + " " + asignaciones.getTarget().size());
+        if (Integer.parseInt(confirmSeleccionados.getCantidad()) < asignaciones.getTarget().size()) {
+            aparecer2 = true;
+        } else {
+            aparecer2 = false;
+        }
+    }
+
     public void asignar() {
         Date date = new Date();
         FacesMessage message = null;
         try {
             Integer iddepe = vistaD.getIdDependencia(origenDependencia);
-            System.out.println("Size: " + asignaciones.getTarget().size());
             for (int i = 0; i < asignaciones.getTarget().size(); i++) {
                 Integer idpersona = distribuidosD.getIdPersonaXnombre(iddepe, asignaciones.getTarget().get(i).toString());
                 GuardarDistribucion gd = new GuardarDistribucion();
@@ -320,6 +333,7 @@ public class DistribucionBean implements Serializable {
         } catch (Exception e) {
             message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR", "PROBLEMAS AL DISTRIBUIR");
             RequestContext.getCurrentInstance().showMessageInDialog(message);
+
         }
     }
 
@@ -554,6 +568,14 @@ public class DistribucionBean implements Serializable {
 
     public void setProducto(String producto) {
         this.producto = producto;
+    }
+
+    public boolean isAparecer2() {
+        return aparecer2;
+    }
+
+    public void setAparecer2(boolean aparecer2) {
+        this.aparecer2 = aparecer2;
     }
 
 }

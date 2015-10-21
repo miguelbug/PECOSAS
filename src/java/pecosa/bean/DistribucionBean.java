@@ -173,7 +173,6 @@ public class DistribucionBean implements Serializable {
             gd.setId_persona(confirm.getIdPersona(usu.getUsuario()));
             p.setFecha(date);
             confirm.guardarPecosa(p);
-            System.out.println("SIze: " + productosSelec.size());
             for (int i = 0; i < productosSelec.size(); i++) {
                 gp.setDireccion(productosSelec.get(i).getDireccion());
                 gp.setFecha_crea(transfFecha(productosSelec.get(i).getFecha()));
@@ -190,6 +189,7 @@ public class DistribucionBean implements Serializable {
                 gd.setFecha(transfFecha(productosSelec.get(i).getFecha()));
                 gd.setCodigo(vistaD.getIdDependencia(productosSelec.get(i).getDestino()));
                 gd.setId_usuario(usu.getIdUsuario());
+                gd.setFlac("0");
                 vistaD.confirmarProductos_2(gd);
                 PecosaProductos pp = new PecosaProductos();
                 pp.setIdpecosa(confirm.getIdPecosa(p));
@@ -269,10 +269,11 @@ public class DistribucionBean implements Serializable {
             Integer iddepe = vistaD.getIdDependencia(destino);
             VerificarDistribucion verif = confirm.verificarProducto(iddepe, confirmSeleccionados.getIdNumero());
             if (verif != null) {
+                verif.setFlac("0");
                 System.out.println("ENTRA A ACTUALIZAR");
                 verif.setCantidad(verif.getCantidad() + Integer.parseInt(cantidad));
-                confirm.actualizarDistribucion2(verif);
-                confirm.actualizarDistribucion(confirmSeleccionados.getIdDistrib(), Integer.parseInt(confirmSeleccionados.getCantidad()) - Integer.parseInt(cantidad));
+                confirm.actualizarDistribucion2(verif);//A QUIEN SE ENVIA
+                confirm.actualizarDistribucion(confirmSeleccionados.getIdDistrib(), Integer.parseInt(confirmSeleccionados.getCantidad()) - Integer.parseInt(cantidad));//DE QUIEN ENVIA
                 message = new FacesMessage(FacesMessage.SEVERITY_INFO, "REALIZADO", "SE HA ACTUALIZADO Y ENVIADO A " + destino);
                 RequestContext.getCurrentInstance().showMessageInDialog(message);
             } else {
@@ -286,6 +287,7 @@ public class DistribucionBean implements Serializable {
                 gd.setId_numero(confirmSeleccionados.getIdNumero());
                 gd.setId_usuario(usu.getIdUsuario());
                 gd.setId_persona(idpersona);
+                gd.setFlac("0");
                 confirm.guardarDistribucion(gd);
                 confirm.actualizarDistribucion(confirmSeleccionados.getIdDistrib(), Integer.parseInt(confirmSeleccionados.getCantidad()) - Integer.parseInt(cantidad));
                 message = new FacesMessage(FacesMessage.SEVERITY_INFO, "REALIZADO", "SE HA DISTRIBUIDO A " + destino);

@@ -30,4 +30,5 @@ public interface ConfirmadosDao {
     public void guardarPecosa(Pecosa p);
     public void guardarProdPecosa(PecosaProductos pp);
     public Integer getIdPersona(String nombre);
+    public void actualizarFlac();
 }

@@ -65,7 +65,6 @@ public class DistribuidosDaoImpl implements DistribuidosDao {
     public Integer getIdPersona(Integer codigo) {
         Integer idPersona = null;
         SqlSession session = sqlSessionFactory.openSession();
-        System.out.println(codigo);
         try {
             idPersona = session.selectOne("Distribuidos.idPersona", codigo);
         } catch (Exception e) {

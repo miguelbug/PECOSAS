@@ -36,6 +36,17 @@ public class ConfirmadosDaoImpl implements ConfirmadosDao {
     }
 
     @Override
+    public void actualizarFlac() {
+        SqlSession session = sqlSessionFactory.openSession();
+        try {
+            session.update("Confirmados.update_flac");
+            session.commit();
+        } finally {
+            session.close();
+        }
+    }
+
+    @Override
     public List<ProductosConfirmados> getProductosConfirmados() {
         List<ProductosConfirmados> lista = null;
         SqlSession session = sqlSessionFactory.openSession();

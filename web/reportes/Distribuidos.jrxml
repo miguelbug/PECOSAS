@@ -42,6 +42,7 @@ WHERE P.ID_PECOSA=PPO.ID_PECOSA
   AND DIST.CODIGO=D.CODIGO
   AND PO.ID_NUMERO=DIST.ID_NUMERO
   AND D.CODIGO NOT IN('100392')
+  AND DIST.FLAC = '0'
 ORDER BY D.NOMBRE]]></queryString>
 
 	<field name="DESTINO" class="java.lang.String"/>
@@ -384,7 +385,7 @@ ORDER BY D.NOMBRE]]></queryString>
 						height="20"
 						key="textField-18"/>
 					<box></box>
-					<textElement textAlignment="Left" verticalAlignment="Middle">
+					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="7"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CANTIDAD}]]></textFieldExpression>
@@ -397,7 +398,7 @@ ORDER BY D.NOMBRE]]></queryString>
 						height="21"
 						key="textField-19"/>
 					<box></box>
-					<textElement textAlignment="Left" verticalAlignment="Middle">
+					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="7"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{MARCA}]]></textFieldExpression>
@@ -419,7 +420,7 @@ ORDER BY D.NOMBRE]]></queryString>
 						height="21"
 						key="textField-20"/>
 					<box></box>
-					<textElement textAlignment="Left" verticalAlignment="Middle">
+					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="7"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{NUMPECOSA}]]></textFieldExpression>

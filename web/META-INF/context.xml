@@ -1,2 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Context antiJARLocking="true" path="/PECOSAS"/>
+<Context antiJARLocking="true" path="/PECOSAS">
+<Resource 
+        name="jdbc/hr" 
+        auth="Container"
+        type="javax.sql.DataSource" 
+        driverClassName="oracle.jdbc.OracleDriver"
+        url="jdbc:oracle:thin:@//172.16.89.130:1521/xe"
+        username="PECOSAS_TEST" 
+        password="pecosas2015" 
+        maxActive="100"
+        minIdle="40"
+        maxWait="10000"
+        initialSize="10"
+        jmxEnabled="true"
+        removeAbandoned="true"/>
+</Context>

@@ -21,6 +21,7 @@
         <result property="precio" column="PRECIO"/>
         <result property="usuario" column="USUARIO"/>
         <result property="fecha_dist" column="FECHA_DIS"/>
+        <result property="asignado" column="ASIGNADO"/>
     </resultMap>
     
     <resultMap id="result2" type="Integer">
@@ -54,13 +55,15 @@
         DECODE(PO.DETALLE,NULL,'SIN DET.',PO.DETALLE) AS DETALLE,
         DECODE(PO.SBN,NULL,'SIN SBN',PO.SBN) AS SBN,
         PO.PRECIO AS PRECIO,
-        USU.NOMBRE_USUARIO AS USUARIO
+        USU.NOMBRE_USUARIO AS USUARIO,
+        P.NOMBRES AS ASIGNADO
 
-        FROM PRODUCTOS_OGPL PO, DISTRIBUCION DIS, DEPENDENCIA DE, USUARIO USU
+        FROM PRODUCTOS_OGPL PO, DISTRIBUCION DIS, DEPENDENCIA DE, USUARIO USU, PERSONA P
         WHERE PO.ID_NUMERO = DIS.ID_NUMERO
         AND DIS.CODIGO = DE.CODIGO
         AND DIS.ID_USUARIO = USU.ID_USUARIO
         AND DE.CODIGO NOT IN ('100392')
+        AND DIS.ID_PERSONA = P.ID_PERSONA
         ORDER BY PO.FECHA_CREACION DESC
     </select>
     

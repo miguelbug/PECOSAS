@@ -123,6 +123,7 @@
                                                      action="#{distribucionBean.llenar()}"/>
                                     <p:commandButton process="productosConfirm" value="Asignar" style="left: 3%" icon="ui-icon-disk" oncomplete="PF('AsignarDialog').show()" action="#{distribucionBean.llenar2()}"
                                                      update=":form:asignarDialog"/>
+                                    <p:commandButton process="productosConfirm" value="Imprimir" style="left: 6%" ajax="false" icon="ui-icon-document" actionListener="#{realizarReporteBean.imprimirDistribucion()}"/>
                                 </f:facet>
                             </p:dataTable>
                         </p:tab>
@@ -147,7 +148,7 @@
                                     <h:outputText value="#{codi.bien}" >
                                     </h:outputText>
                                 </p:column>
-                                <p:column headerText="DESTINO" filterBy="#{codi.destino}" filterMatchMode="contains" style="width: 25%">
+                                <p:column headerText="DESTINO" filterBy="#{codi.destino}" filterMatchMode="contains" style="width: 22%">
                                     <h:outputText value="#{codi.destino}" >
                                     </h:outputText>
                                 </p:column>
@@ -165,8 +166,8 @@
                                         <f:facet name="input"><p:inputText value="#{codi.sbn}"/></f:facet>
                                     </p:cellEditor>
                                 </p:column>
-                                <p:column headerText="SERIE" filterBy="#{codi.serie}" filterMatchMode="contains">
-                                    <h:outputText value="#{codi.serie}" >
+                                <p:column headerText="ASIGNADO" filterBy="#{codi.asignado}" filterMatchMode="contains">
+                                    <h:outputText value="#{codi.asignado}" >
                                     </h:outputText>
                                 </p:column>
                                 <p:column style="width:32px;text-align: center">
@@ -180,17 +181,17 @@
                             </p:dataTable>
                         </p:tab>
                     </p:tabView>
-                    <p:dialog header="Detalle Producto" widgetVar="DetallProdDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" position="center center" id="DialogDetallProd" width="1200">
+                    <p:dialog closeOnEscape="true" header="Detalle Producto" widgetVar="DetallProdDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" position="center center" id="DialogDetallProd" width="1200">
                         <center>
                             <h:outputLabel value="Detalle del Producto: "/>
                             <br></br>
                             <br></br>
                             <p:dataTable value="#{distribucionBean.seleccionado}" var="codi">
-                                <p:column headerText="PREC. UNIT." style="width: 10%">
+                                <p:column headerText="PREC. UNIT.">
                                     <h:outputText value="#{codi.precio}">
                                     </h:outputText>
                                 </p:column>
-                                <p:column headerText="UNIDAD" style="width: 15%">
+                                <p:column headerText="UNIDAD" >
                                     <h:outputText value="#{codi.unidad}" >
                                     </h:outputText>
                                 </p:column>
@@ -198,8 +199,12 @@
                                     <h:outputText value="#{codi.marca}" >
                                     </h:outputText>
                                 </p:column>
+                                <p:column headerText="SERIE">
+                                    <h:outputText value="#{codi.serie}" >
+                                    </h:outputText>
+                                </p:column>
                                 <p:column headerText="DETALLE">
-                                    <h:outputText value="#{codi.detalle}" style="width: 60%" >
+                                    <h:outputText value="#{codi.detalle}">
                                     </h:outputText>
                                 </p:column>
                             </p:dataTable>
@@ -225,7 +230,7 @@
                             </p:commandButton>
                         </center>
                     </p:dialog>
-                    <p:dialog header="Detalle Producto" widgetVar="DetallProdVistaDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" position="center center" id="DialogDetallProdVista" width="1200">
+                    <p:dialog closeOnEscape="true" header="Detalle Producto" widgetVar="DetallProdVistaDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" position="center center" id="DialogDetallProdVista" width="1200">
                         <center>
                             <h:outputLabel value="Detalle del Producto: "/>
                             <br></br>

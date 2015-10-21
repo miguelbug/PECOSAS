@@ -33,6 +33,7 @@ public class ProductosDistribuidos implements Serializable{
     private String sbn;
     private String usuario;
     private Double precio;
+    private String asignado;
     
     public ProductosDistribuidos() {
     }
@@ -155,6 +156,14 @@ public class ProductosDistribuidos implements Serializable{
 
     public void setPrecio(Double precio) {
         this.precio = precio;
+    }
+
+    public String getAsignado() {
+        return asignado;
+    }
+
+    public void setAsignado(String asignado) {
+        this.asignado = asignado;
     }
     
 }

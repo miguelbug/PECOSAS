@@ -25,6 +25,7 @@ public class GuardarDistribucion implements Serializable{
     private Integer codigo;
     private Integer id_usuario;
     private Integer id_persona;
+    private String flac;
     
     public GuardarDistribucion() {
     }
@@ -75,6 +76,14 @@ public class GuardarDistribucion implements Serializable{
 
     public void setId_persona(Integer id_persona) {
         this.id_persona = id_persona;
+    }
+
+    public String getFlac() {
+        return flac;
+    }
+
+    public void setFlac(String flac) {
+        this.flac = flac;
     }
     
 }

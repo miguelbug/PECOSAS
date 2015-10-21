@@ -86,8 +86,8 @@
     </select>
     
     <insert id="guardar_distrib" parameterType="pecosa.model.GuardarDistribucion">
-        INSERT INTO DISTRIBUCION (CANTIDAD,FECHA,ID_NUMERO,CODIGO,ID_USUARIO,ID_PERSONA)
-        VALUES (#{cantidad},#{fecha},#{id_numero},#{codigo},#{id_usuario},#{id_persona})
+        INSERT INTO DISTRIBUCION (CANTIDAD,FECHA,ID_NUMERO,CODIGO,ID_USUARIO,ID_PERSONA,FLAC)
+        VALUES (#{cantidad},#{fecha},#{id_numero},#{codigo},#{id_usuario},#{id_persona},#{flac})
     </insert>
     
     <insert id="guardar_pecosa" parameterType="pecosa.model.Pecosa">
@@ -114,10 +114,19 @@
         WHERE ID_NUMERO = #{idnumero}
     </update>
     
+    <update id="update_flac" parameterType="pecosa.model.VerificarDistribucion">
+        UPDATE DISTRIBUCION
+        SET
+        FLAC='1'
+        WHERE FLAC='0'
+        AND CODIGO NOT IN ('100392')
+    </update>
+    
     <update id="update_distrib2" parameterType="pecosa.model.VerificarDistribucion">
         UPDATE DISTRIBUCION
         SET
-        CANTIDAD = #{cantidad}
+        CANTIDAD = #{cantidad},
+        FLAC=#{flac}
         WHERE ID_DISTRIBUCION = #{id_distribucion}
         AND CODIGO = #{codigo}
         AND ID_NUMERO = #{id_numero}

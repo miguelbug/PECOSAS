@@ -24,7 +24,8 @@ public class VerificarDistribucion implements Serializable {
     private Integer codigo;
     private Integer id_usuario;
     private Integer id_distribucion;
-
+    private String flac;
+    
     public VerificarDistribucion() {
     }
 
@@ -74,6 +75,14 @@ public class VerificarDistribucion implements Serializable {
 
     public void setId_distribucion(Integer id_distribucion) {
         this.id_distribucion = id_distribucion;
+    }
+
+    public String getFlac() {
+        return flac;
+    }
+
+    public void setFlac(String flac) {
+        this.flac = flac;
     }
 
 }

@@ -14,6 +14,10 @@
     <resultMap id="result2" type="String">
         <result property="nombre" column="NOMBRE"/>
     </resultMap>
+    
+    <resultMap id="result3" type="String">
+        <result property="codigoPecosa" column="CODIGO"/>
+    </resultMap>
  
     <select id="getDependencias" resultMap="result">
         SELECT CODIGO AS CODIGO,
@@ -28,6 +32,16 @@
         WHERE CODIGO=#{codigo}
     </select>
     
-   
-
+    <select id="getPecosas" resultMap="result3">
+        SELECT CODIGO AS CODIGO
+        FROM PECOSA
+        GROUP BY CODIGO, FECHA
+        ORDER BY FECHA DESC
+    </select>
+    
+    <select id="validarPecosa" resultMap="result3" parameterType="String">
+        SELECT CODIGO AS CODIGO
+        FROM PECOSA
+        WHERE CODIGO = #{pecosa}
+    </select>
 </mapper>

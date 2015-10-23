@@ -34,7 +34,6 @@ import pecosa.model.GuardarDistribucion;
 import pecosa.model.GuardarProducto;
 import pecosa.model.Pecosa;
 import pecosa.model.PecosaProductos;
-import pecosa.model.Persona;
 import pecosa.model.ProductoVista;
 import pecosa.model.ProductosConfirmados;
 import pecosa.model.ProductosDistribuidos;
@@ -59,7 +58,7 @@ public class DistribucionBean implements Serializable {
     private List<ProductosConfirmados> listaConfirmados;
     private ConfirmadosDao confirm;
     private ListasGeneralesDao lg;
-    private ProductosConfirmados confirmSeleccionados;
+    private List<ProductosConfirmados> confirmSeleccionados;
     private ProductosConfirmados confirmSeleccionados2;
     private List<ProductosConfirmados> confirmFiltro;
     private List<String> listaDepe;
@@ -81,8 +80,18 @@ public class DistribucionBean implements Serializable {
     private int cantidadAsign;
     private String producto;
     private boolean aparecer2;
+    private List<String> pecosasLista;
+    private boolean pecosa;
+    private boolean pecosa2;
+    private boolean pecosa3;
+    private boolean habilitar;
+    private String idpecosa;
 
     public DistribucionBean() {
+        pecosa = false;
+        pecosa2 = false;
+        pecosa3 = false;
+        pecosasLista = new ArrayList<String>();
         aparecer2 = false;
         vistaD = new VistaDaoImpl();
         origen = new ArrayList<String>();
@@ -109,6 +118,29 @@ public class DistribucionBean implements Serializable {
         origen = lg.getNombrePersonas(iddestino);
         asignaciones.setSource(origen);
         asignaciones.setTarget(destinoLista);
+    }
+
+    public void habilitarBoton() {
+        if (lg.validarPecosa(codigopecosa) == true) {
+            habilitar = true;
+        } else {
+            habilitar = false;
+        }
+    }
+
+    public void agregar() {
+        habilitar = false;
+        pecosa = false;
+        pecosa2 = true;
+        pecosa3 = true;
+        llenarPecosas();
+    }
+
+    public void crear() {
+        habilitar = true;
+        pecosa = true;
+        pecosa2 = false;
+        pecosa3 = true;
     }
 
     public void onRowEdit(RowEditEvent event) {
@@ -229,12 +261,17 @@ public class DistribucionBean implements Serializable {
 
     public void llenar2() {
         llenarDependencias();
-        origenDependencia="";
-        this.cantidadAsign = Integer.parseInt(confirmSeleccionados.getCantidad());
-        producto = confirmSeleccionados.getBien();
+        origenDependencia = "";
+        this.cantidadAsign = Integer.parseInt(confirmSeleccionados.get(0).getCantidad());
+        producto = confirmSeleccionados.get(0).getBien();
         origen.clear();
         destinoLista.clear();
         asignaciones = new DualListModel<String>(origen, destinoLista);
+    }
+
+    public void llenarPecosas() {
+        this.pecosasLista = lg.getCodigoPecosas();
+
     }
 
     public void llenarDependencias() {
@@ -253,7 +290,7 @@ public class DistribucionBean implements Serializable {
         cantidades.clear();
         try {
             int i = 1;
-            while (i <= Integer.parseInt(confirmSeleccionados.getCantidad())) {
+            while (i <= Integer.parseInt(confirmSeleccionados.get(0).getCantidad())) {
                 cantidades.add(i);
                 i++;
             }
@@ -267,31 +304,34 @@ public class DistribucionBean implements Serializable {
         FacesMessage message = null;
         try {
             Integer iddepe = vistaD.getIdDependencia(destino);
-            VerificarDistribucion verif = confirm.verificarProducto(iddepe, confirmSeleccionados.getIdNumero());
-            if (verif != null) {
-                verif.setFlac("0");
-                System.out.println("ENTRA A ACTUALIZAR");
-                verif.setCantidad(verif.getCantidad() + Integer.parseInt(cantidad));
-                confirm.actualizarDistribucion2(verif);//A QUIEN SE ENVIA
-                confirm.actualizarDistribucion(confirmSeleccionados.getIdDistrib(), Integer.parseInt(confirmSeleccionados.getCantidad()) - Integer.parseInt(cantidad));//DE QUIEN ENVIA
-                message = new FacesMessage(FacesMessage.SEVERITY_INFO, "REALIZADO", "SE HA ACTUALIZADO Y ENVIADO A " + destino);
-                RequestContext.getCurrentInstance().showMessageInDialog(message);
-            } else {
-                Integer idpersona = distribuidosD.getIdPersona(iddepe);
-                System.out.println(idpersona);
-                System.out.println("ENTRA A GUARDAR");
-                GuardarDistribucion gd = new GuardarDistribucion();
-                gd.setCantidad(Integer.parseInt(cantidad));
-                gd.setCodigo(iddepe);
-                gd.setFecha(date);
-                gd.setId_numero(confirmSeleccionados.getIdNumero());
-                gd.setId_usuario(usu.getIdUsuario());
-                gd.setId_persona(idpersona);
-                gd.setFlac("0");
-                confirm.guardarDistribucion(gd);
-                confirm.actualizarDistribucion(confirmSeleccionados.getIdDistrib(), Integer.parseInt(confirmSeleccionados.getCantidad()) - Integer.parseInt(cantidad));
-                message = new FacesMessage(FacesMessage.SEVERITY_INFO, "REALIZADO", "SE HA DISTRIBUIDO A " + destino);
-                RequestContext.getCurrentInstance().showMessageInDialog(message);
+            System.out.println("Size: "+confirmSeleccionados.size());
+            for (int i = 0; i < confirmSeleccionados.size(); i++) {
+                VerificarDistribucion verif = confirm.verificarProducto(iddepe, confirmSeleccionados.get(i).getIdNumero());
+                if (verif != null) {
+                    verif.setFlac("0");
+                    System.out.println("ENTRA A ACTUALIZAR");
+                    verif.setCantidad(verif.getCantidad() + Integer.parseInt(cantidad));
+                    confirm.actualizarDistribucion2(verif);//A QUIEN SE ENVIA
+                    confirm.actualizarDistribucion(confirmSeleccionados.get(0).getIdDistrib(), Integer.parseInt(confirmSeleccionados.get(0).getCantidad()) - Integer.parseInt(cantidad));//DE QUIEN ENVIA
+                    message = new FacesMessage(FacesMessage.SEVERITY_INFO, "REALIZADO", "SE HA ACTUALIZADO Y ENVIADO A " + destino);
+                    RequestContext.getCurrentInstance().showMessageInDialog(message);
+                } else {
+                    Integer idpersona = distribuidosD.getIdPersona(iddepe);
+                    System.out.println(idpersona);
+                    System.out.println("ENTRA A GUARDAR");
+                    GuardarDistribucion gd = new GuardarDistribucion();
+                    gd.setCantidad(Integer.parseInt(cantidad));
+                    gd.setCodigo(iddepe);
+                    gd.setFecha(date);
+                    gd.setId_numero(confirmSeleccionados.get(i).getIdNumero());
+                    gd.setId_usuario(usu.getIdUsuario());
+                    gd.setId_persona(idpersona);
+                    gd.setFlac("0");
+                    confirm.guardarDistribucion(gd);
+                    confirm.actualizarDistribucion(confirmSeleccionados.get(i).getIdDistrib(), Integer.parseInt(confirmSeleccionados.get(i).getCantidad()) - Integer.parseInt(cantidad));
+                    message = new FacesMessage(FacesMessage.SEVERITY_INFO, "REALIZADO", "SE HA DISTRIBUIDO A " + destino);
+                    RequestContext.getCurrentInstance().showMessageInDialog(message);
+                }
             }
             destino = " ";
             cantidad = " ";
@@ -304,8 +344,8 @@ public class DistribucionBean implements Serializable {
     }
 
     public void onTransfer(TransferEvent event) {
-        System.out.println(Integer.parseInt(confirmSeleccionados.getCantidad()) + " " + asignaciones.getTarget().size());
-        if (Integer.parseInt(confirmSeleccionados.getCantidad()) < asignaciones.getTarget().size()) {
+        System.out.println(Integer.parseInt(confirmSeleccionados.get(0).getCantidad()) + " " + asignaciones.getTarget().size());
+        if (Integer.parseInt(confirmSeleccionados.get(0).getCantidad()) < asignaciones.getTarget().size()) {
             aparecer2 = true;
         } else {
             aparecer2 = false;
@@ -317,24 +357,28 @@ public class DistribucionBean implements Serializable {
         FacesMessage message = null;
         try {
             Integer iddepe = vistaD.getIdDependencia(origenDependencia);
-            for (int i = 0; i < asignaciones.getTarget().size(); i++) {
-                Integer idpersona = distribuidosD.getIdPersonaXnombre(iddepe, asignaciones.getTarget().get(i).toString());
-                GuardarDistribucion gd = new GuardarDistribucion();
-                gd.setCantidad(1);
-                gd.setCodigo(iddepe);
-                gd.setFecha(date);
-                gd.setId_numero(confirmSeleccionados.getIdNumero());
-                gd.setId_usuario(usu.getIdUsuario());
-                gd.setId_persona(idpersona);
-                confirm.guardarDistribucion(gd);
+            for (int j = 0; j < confirmSeleccionados.size(); j++) {
+                for (int i = 0; i < asignaciones.getTarget().size(); i++) {
+                    Integer idpersona = distribuidosD.getIdPersonaXnombre(iddepe, asignaciones.getTarget().get(i).toString());
+                    GuardarDistribucion gd = new GuardarDistribucion();
+                    gd.setCantidad(1);
+                    gd.setCodigo(iddepe);
+                    gd.setFecha(date);
+                    gd.setId_numero(confirmSeleccionados.get(j).getIdNumero());
+                    gd.setId_usuario(usu.getIdUsuario());
+                    gd.setId_persona(idpersona);
+                    gd.setFlac("0");
+                    confirm.guardarDistribucion(gd);
+                }
+                confirm.actualizarDistribucion(confirmSeleccionados.get(j).getIdDistrib(), Integer.parseInt(confirmSeleccionados.get(j).getCantidad()) - asignaciones.getTarget().size());
             }
-            confirm.actualizarDistribucion(confirmSeleccionados.getIdDistrib(), Integer.parseInt(confirmSeleccionados.getCantidad()) - asignaciones.getTarget().size());
             message = new FacesMessage(FacesMessage.SEVERITY_INFO, "REALIZADO", "SE HA DISTRIBUIDO");
             RequestContext.getCurrentInstance().showMessageInDialog(message);
             llenarConfirmados();
         } catch (Exception e) {
             message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR", "PROBLEMAS AL DISTRIBUIR");
             RequestContext.getCurrentInstance().showMessageInDialog(message);
+            System.out.println(e.getMessage());
 
         }
     }
@@ -428,11 +472,11 @@ public class DistribucionBean implements Serializable {
         this.lg = lg;
     }
 
-    public ProductosConfirmados getConfirmSeleccionados() {
+    public List<ProductosConfirmados> getConfirmSeleccionados() {
         return confirmSeleccionados;
     }
 
-    public void setConfirmSeleccionados(ProductosConfirmados confirmSeleccionados) {
+    public void setConfirmSeleccionados(List<ProductosConfirmados> confirmSeleccionados) {
         this.confirmSeleccionados = confirmSeleccionados;
     }
 
@@ -578,6 +622,54 @@ public class DistribucionBean implements Serializable {
 
     public void setAparecer2(boolean aparecer2) {
         this.aparecer2 = aparecer2;
+    }
+
+    public List<String> getPecosasLista() {
+        return pecosasLista;
+    }
+
+    public void setPecosasLista(List<String> pecosasLista) {
+        this.pecosasLista = pecosasLista;
+    }
+
+    public boolean isPecosa() {
+        return pecosa;
+    }
+
+    public void setPecosa(boolean pecosa) {
+        this.pecosa = pecosa;
+    }
+
+    public boolean isPecosa2() {
+        return pecosa2;
+    }
+
+    public void setPecosa2(boolean pecosa2) {
+        this.pecosa2 = pecosa2;
+    }
+
+    public String getIdpecosa() {
+        return idpecosa;
+    }
+
+    public void setIdpecosa(String idpecosa) {
+        this.idpecosa = idpecosa;
+    }
+
+    public boolean isPecosa3() {
+        return pecosa3;
+    }
+
+    public void setPecosa3(boolean pecosa3) {
+        this.pecosa3 = pecosa3;
+    }
+
+    public boolean isHabilitar() {
+        return habilitar;
+    }
+
+    public void setHabilitar(boolean habilitar) {
+        this.habilitar = habilitar;
     }
 
 }

@@ -75,7 +75,7 @@
                                 <p:ajax event="rowEdit" listener="#{distribucionBean.onRowEdit}"  />
                                 <p:ajax event="rowEditCancel" listener="#{distribucionBean.onRowCancel}"  />
 
-                                <p:column selectionMode="Single" style="width:16px;text-align:center"/>
+                                <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
                                 <p:column headerText="N°" style="display: none">
                                     <h:outputText value="#{codi.idNumero}" >
                                     </h:outputText>
@@ -253,14 +253,26 @@
                     </p:dialog>
                     <p:dialog header="Confirmar" modal="true" showEffect="fade" widgetVar="ConfirmarDialog" hideEffect="fade" resizable="false" position="center center" id="confirmarDialog" closeOnEscape="true">
                         <center>
-                            <h:panelGrid columns="2" cellpadding="4">
-                                <p:outputLabel value="N° Pecosa: "/>
-                                <p:inputText value="#{distribucionBean.codigopecosa}"/>
+                            <h:panelGrid columns="2">
+                                <p:commandButton value="Agregar Pecosa" actionListener="#{distribucionBean.agregar()}" update="panelPecosa"/>
+                                <p:commandButton value="Crear Pecosa" actionListener="#{distribucionBean.crear()}" update="panelPecosa"/>
                             </h:panelGrid>
                             <br></br>
-                            <p:commandButton value="Confirmar" actionListener="#{distribucionBean.confirmar()}" icon="ui-icon-check" title="Confirmar" update=":form:">
+                            <h:panelGrid columns="2" cellpadding="4" id="panelPecosa">
+                                <p:outputLabel value="N° Pecosa: "/>
+                                <p:inputText value="#{distribucionBean.codigopecosa}" rendered="#{distribucionBean.pecosa}" id="inputPecosa">
+                                    <p:ajax event="keyup" listener="#{distribucionBean.habilitarBoton()}" update="botonConfirmar"/>
+                                </p:inputText>
+                                
+                                <p:selectOneMenu value="#{distribucionBean.idpecosa}" rendered="#{distribucionBean.pecosa2}" id="selectPecosa">
+                                    <f:selectItems value="#{distribucionBean.pecosasLista}"/>
+                                </p:selectOneMenu>
+                            </h:panelGrid>
+                            <br></br>
+                            <p:commandButton id="botonConfirmar" value="Confirmar" actionListener="#{distribucionBean.confirmar()}" icon="ui-icon-check" title="Confirmar" update=":form:" disabled="#{distribucionBean.habilitar}">
                                 <f:ajax event="click" onevent="ConfirmarDialog.hide()"/>
                             </p:commandButton>
+                            <br></br>
                         </center>
                     </p:dialog>
                     <p:dialog dynamic="true" header="Asignar" width="600" modal="true" showEffect="fade" widgetVar="AsignarDialog" hideEffect="fade" resizable="false" position="center center" id="asignarDialog">

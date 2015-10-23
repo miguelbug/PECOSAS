@@ -65,8 +65,8 @@
                        VALUES (#{direccion},#{fecha_crea},#{bien},#{unidad},#{marca},#{precio},#{serie},#{detalle},#{codigo})
     </insert>
     <insert id="insert_origen" parameterType="pecosa.model.GuardarDistribucion">
-        INSERT INTO DISTRIBUCION (CANTIDAD,FECHA,ID_NUMERO,CODIGO,ID_USUARIO,ID_PERSONA)
-        VALUES (#{cantidad},#{fecha},#{id_numero},#{codigo},#{id_usuario},#{id_persona})
+        INSERT INTO DISTRIBUCION (CANTIDAD,FECHA,ID_NUMERO,CODIGO,ID_USUARIO,ID_PERSONA,FLAC)
+        VALUES (#{cantidad},#{fecha},#{id_numero},#{codigo},#{id_usuario},#{id_persona},#{flac})
     </insert>
 
 </mapper>

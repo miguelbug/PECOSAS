@@ -15,7 +15,9 @@ import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 import pecosa.dao.ConfirmadosDao;
+import pecosa.dao.TemporalDao;
 import pecosa.daoImpl.ConfirmadosDaoImpl;
+import pecosa.daoImpl.TemporalDaoImpl;
 import pecosa.exporter.CategoriaServicio;
 import pecosa.exporter.ReporteController;
 import pecosa.model.Usuario;
@@ -37,9 +39,11 @@ public class RealizarReporteBean implements Serializable {
     private HashMap<String, Object> parametros;
     private Usuario usu;
     private ConfirmadosDao confirm;
+    private TemporalDao td;
 
     public RealizarReporteBean() {
         confirm = new ConfirmadosDaoImpl();
+        td = new TemporalDaoImpl();
     }
 
     public void inicializar(String reporte) throws SQLException {
@@ -71,8 +75,26 @@ public class RealizarReporteBean implements Serializable {
         }
         categoriaServicio.CerrandoConexion();
         confirm.actualizarFlac();
+        
     }
-
+    
+    public void imprimirConfirmados() throws SQLException {
+        inicializar("Confirmados");
+        FacesMessage message = null;
+        boolean rpt = false;
+        parametros.put("usuario", usu.getNombre());
+        parametros.put("logo", getLogo());
+        repor.addMapParam(parametros);
+        rpt = repor.ejecutaReporte(context, serveltcontext);
+        if (!rpt && message == null) {
+            message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensaje", "No hay datos para generar reporte");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        }
+        categoriaServicio.CerrandoConexion();
+        confirm.actualizarFlac();
+        td.actualizarTemporal();
+    }
+    
     public String getLogo() {
         String logo = "";
         logo = serveltcontext.getRealPath("image/" + "escudo_reporte" + ".jpg");

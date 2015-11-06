@@ -64,6 +64,7 @@
                                 </p:column>
                                 <f:facet name="footer">
                                     <p:commandButton process="vistaSinConfirm" value="Confirmar" update=":form:confirmarDialog" oncomplete="PF('ConfirmarDialog').show()"  icon="ui-icon-check"/>
+                                    <p:commandButton process="vistaSinConfirm" value="Imprimir" ajax="false" actionListener="#{realizarReporteBean.imprimirConfirmados()}" style="left: 3%"/>
                                 </f:facet>
                             </p:dataTable>
                         </p:tab>

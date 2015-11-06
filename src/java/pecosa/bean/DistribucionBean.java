@@ -24,10 +24,12 @@ import org.primefaces.model.DualListModel;
 import pecosa.dao.ConfirmadosDao;
 import pecosa.dao.DistribuidosDao;
 import pecosa.dao.ListasGeneralesDao;
+import pecosa.dao.TemporalDao;
 import pecosa.dao.VistaDao;
 import pecosa.daoImpl.ConfirmadosDaoImpl;
 import pecosa.daoImpl.DistribuidosDaoImpl;
 import pecosa.daoImpl.ListasGeneralesDaoImpl;
+import pecosa.daoImpl.TemporalDaoImpl;
 import pecosa.daoImpl.VistaDaoImpl;
 import pecosa.model.Dependencia;
 import pecosa.model.GuardarDistribucion;
@@ -37,6 +39,7 @@ import pecosa.model.PecosaProductos;
 import pecosa.model.ProductoVista;
 import pecosa.model.ProductosConfirmados;
 import pecosa.model.ProductosDistribuidos;
+import pecosa.model.Temporal;
 import pecosa.model.Usuario;
 import pecosa.model.VerificarDistribucion;
 
@@ -72,7 +75,8 @@ public class DistribucionBean implements Serializable {
     private DistribuidosDao distribuidosD;
     private List<ProductosDistribuidos> filtro;
     private ProductosDistribuidos seleccionado;
-
+    
+    private TemporalDao td;
     private String origenDependencia;
     private DualListModel<String> asignaciones;
     private List<String> origen;
@@ -93,6 +97,7 @@ public class DistribucionBean implements Serializable {
         pecosa3 = false;
         pecosasLista = new ArrayList<String>();
         aparecer2 = false;
+        td = new TemporalDaoImpl();
         vistaD = new VistaDaoImpl();
         origen = new ArrayList<String>();
         destinoLista = new ArrayList<String>();
@@ -198,6 +203,7 @@ public class DistribucionBean implements Serializable {
         FacesMessage message = null;
         try {
             Date date = new Date();
+            Temporal t = new Temporal();
             GuardarProducto gp = new GuardarProducto();
             GuardarDistribucion gd = new GuardarDistribucion();
             Pecosa p = new Pecosa();
@@ -215,6 +221,19 @@ public class DistribucionBean implements Serializable {
                 gp.setSerie(productosSelec.get(i).getSerie());
                 gp.setDetalle(productosSelec.get(i).getDetalle());
                 gp.setCodigo(Integer.parseInt(productosSelec.get(i).getCodigo()));
+                //guarda temporal
+                t.setFechaRegistro(transfFecha(productosSelec.get(i).getFecha()));
+                t.setBien(productosSelec.get(i).getBien());
+                t.setCantidad(Integer.parseInt(productosSelec.get(i).getCantidad()));
+                t.setEstado("0");
+                Integer lote = td.getLote();
+                if(lote==1){
+                    t.setLote(lote);
+                }else{
+                    lote++;
+                    t.setLote(lote);
+                }
+                //
                 vistaD.confirmarProductos_1(gp);
                 gd.setId_numero(vistaD.getIdProductoInterno(gp.getFecha_crea(), gp.getBien(), gp.getCodigo()));
                 gd.setCantidad(Integer.parseInt(productosSelec.get(i).getCantidad()));
@@ -227,8 +246,10 @@ public class DistribucionBean implements Serializable {
                 pp.setIdpecosa(confirm.getIdPecosa(p));
                 pp.setIdproducto(confirm.getIdProductos(gp));
                 confirm.guardarProdPecosa(pp);
+                td.guardarTemporal(t);
             }
             codigopecosa = "";
+            
             message = new FacesMessage(FacesMessage.SEVERITY_INFO, "REALIZADO", "SE HA CONFIRMADO EL PRODUCTO");
             RequestContext.getCurrentInstance().showMessageInDialog(message);
             llenarVista();

@@ -28,6 +28,10 @@
         <result property="codigoDep" column="CODIGO"/>
     </resultMap>
     
+    <resultMap id="result4" type="Integer">
+        <result property="lote" column="LOTE"/>
+    </resultMap>
+    
     <select id="getProdVista" resultMap="result">
         SELECT  ROWNUM||''||NUMERO AS IDVISTA,
         NUMERO AS NUMERO,
@@ -62,8 +66,26 @@
     
     <insert id="insert_productos" parameterType="pecosa.model.GuardarProducto">
         INSERT INTO PRODUCTOS_OGPL (DIRECCION,FECHA_CREACION,BIEN,UNIDAD,MARCA,PRECIO,SERIE,DETALLE,CODIGO)
-                       VALUES (#{direccion},#{fecha_crea},#{bien},#{unidad},#{marca},#{precio},#{serie},#{detalle},#{codigo})
+        VALUES (#{direccion},#{fecha_crea},#{bien},#{unidad},#{marca},#{precio},#{serie},#{detalle},#{codigo})
     </insert>
+    
+    <insert id="insert_temporal" parameterType="pecosa.model.Temporal">
+        INSERT INTO TEMPORAL (FECHA_REGISTRO,BIEN,CANTIDAD,ESTADO,LOTE)
+        VALUES (#{fechaRegistro},#{bien},#{cantidad},#{estado},#{lote})
+    </insert>
+    
+    <update id="actualizar_temporal">
+        UPDATE TEMPORAL
+        SET
+        ESTADO='1'
+        WHERE ESTADO='0'
+    </update>
+    
+    <select id="getLote" resultMap="result4">
+        SELECT DECODE(MAX(LOTE),NULL,1,MAX(LOTE)) AS LOTE
+        FROM TEMPORAL
+    </select>
+    
     <insert id="insert_origen" parameterType="pecosa.model.GuardarDistribucion">
         INSERT INTO DISTRIBUCION (CANTIDAD,FECHA,ID_NUMERO,CODIGO,ID_USUARIO,ID_PERSONA,FLAC)
         VALUES (#{cantidad},#{fecha},#{id_numero},#{codigo},#{id_usuario},#{id_persona},#{flac})

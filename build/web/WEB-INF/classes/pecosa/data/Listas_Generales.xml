@@ -24,6 +24,7 @@
         NOMBRE AS NOMBRE,
         SIGLAS AS SIGLAS
         FROM DEPENDENCIA
+        WHERE FLAC = '0'
     </select>
     
     <select id="getPersonas" resultMap="result2" parameterType="Integer">

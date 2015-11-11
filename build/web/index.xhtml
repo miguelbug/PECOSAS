@@ -9,10 +9,8 @@
         <script language="JavaScript" src="./resources/js/caducarSesiones.js" type="text/javascript"/>
     </h:head> 
     <h:body>
-        <!--<img src="image/banner3.jpg" style=" width: 100%"/>-->
         <p:graphicImage url="/image/banner3.jpg" width="100%"/>
         <h:form style="width:30%;height:100%;margin:auto" id="form">
-            <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
             <center>
                 <br></br>
                 <br></br>
@@ -26,7 +24,7 @@
                     </h:panelGrid>
                     <br></br>
                     <center>
-                        <p:commandButton value="Ingresar" action="#{loginBean.actionLogin()}" update=":form:"/>
+                        <p:commandButton value="Ingresar" action="#{loginBean.actionLogin()}" update=":form:" onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"/>
                         <p:dialog id="status" widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
                             <p:graphicImage url="/image/progress_bar.gif" />
                         </p:dialog>
@@ -43,18 +41,15 @@
                     <p:outputLabel value="!!!DEBE LLENAR TODOS LOS CAMPOS¡¡¡"/>
                 </center>
             </p:dialog>
-            <p:idleMonitor onidle="PF('sessionTimeOutDialog').show()" timeout="1800000"/><!-- control del timeout-->
+            <p:idleMonitor onidle="sessionTimeOutDialog.show();" timeout="#{60000}" />
         </h:form>
-        <!-- Inicio control del timeout -->
-        <p:dialog header="SESIÓN CADUCADA" widgetVar="sessionTimeOutDialog" modal="true" closable="false" width="400" visible="false">
-            <h:form>
-                <center>
-                    <h:outputText value="Su sesión ha caducado, pulse el botón para reiniciar su sesión." /><br />
-                    <input type="submit" value="Reiniciar" onclick="setTimeout('redireccionar()', 0);"/>
-                </center>
-            </h:form>
+        
+        <p:dialog header="Sesión Caducada" widgetVar="sessionTimeOutDialog" 
+                  modal="true" closable="false" width="400">
+            <h:outputText value="Su sesión se ha caducado, haga click para iniciar sesión" /><br></br>
+            <input id="confirmBackToLogin" type="button" value="Iniciar Sesion"
+                   onclick="setTimeout('redireccionar()', 0);" />
         </p:dialog>
-        <!-- Fin control del timeout -->
     </h:body>
 </html>
 

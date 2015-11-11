@@ -6,7 +6,6 @@
     <h:head>
         <title>Facelet Title</title>
         <link rel="stylesheet" type="text/css" href="resources/css2/estilos.css" />
-        <script language="JavaScript" src="./resources/js/caducarSesiones.js" type="text/javascript"/>
     </h:head>
     <h:body style="background-color: #CCCCFF;">
         <p:graphicImage url="/image/banner3.jpg" width="100%"/>
@@ -19,17 +18,6 @@
                 </p:submenu>
             </p:menubar>
             <br></br>
-            <p:idleMonitor onidle="PF('sessionTimeOutDialog').show()" timeout="1800000"/><!-- control del timeout-->
         </h:form>
-        <!-- Inicio control del timeout -->
-        <p:dialog header="SESIÓN CADUCADA" widgetVar="sessionTimeOutDialog" modal="true" closable="false" width="400" visible="false">
-            <h:form>
-                <center>
-                    <h:outputText value="Su sesión ha caducado, pulse el botón para reiniciar su sesión." /><br />
-                    <input type="submit" value="Reiniciar" onclick="setTimeout('redireccionar()', 0);"/>
-                </center>
-            </h:form>
-        </p:dialog>
-        <!-- Fin control del timeout -->
     </h:body>
 </html>

@@ -33,7 +33,7 @@
     </resultMap>
     
     <select id="getProdVista" resultMap="result">
-        SELECT  ROWNUM||''||NUMERO AS IDVISTA,
+        SELECT  DETALLE_ID AS IDVISTA,
         NUMERO AS NUMERO,
         DESTINO AS DESTINO,
         DIRECCION AS DIRECCION,

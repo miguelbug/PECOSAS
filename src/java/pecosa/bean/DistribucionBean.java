@@ -82,6 +82,7 @@ public class DistribucionBean implements Serializable {
     private List<String> origen;
     private List<String> destinoLista;
     private int cantidadAsign;
+    private List<Integer> cantidades2;
     private String producto;
     private boolean aparecer2;
     private List<String> pecosasLista;
@@ -96,6 +97,7 @@ public class DistribucionBean implements Serializable {
         pecosa2 = false;
         pecosa3 = false;
         pecosasLista = new ArrayList<String>();
+        cantidades2 = new ArrayList<Integer>();
         aparecer2 = false;
         td = new TemporalDaoImpl();
         vistaD = new VistaDaoImpl();
@@ -276,6 +278,7 @@ public class DistribucionBean implements Serializable {
     }
 
     public void llenar() {
+        
         llenarDependencias();
         llenarCantidades();
     }
@@ -283,13 +286,24 @@ public class DistribucionBean implements Serializable {
     public void llenar2() {
         llenarDependencias();
         origenDependencia = "";
-        this.cantidadAsign = Integer.parseInt(confirmSeleccionados.get(0).getCantidad());
+        //this.cantidadAsign = Integer.parseInt(confirmSeleccionados.get(0).getCantidad());
+        //this.cantidadAsign = getMenor();
+        llenarCantidades();
         producto = confirmSeleccionados.get(0).getBien();
         origen.clear();
         destinoLista.clear();
         asignaciones = new DualListModel<String>(origen, destinoLista);
     }
-
+    public Integer getMenor(){
+        Integer aux=0;
+        aux =Integer.parseInt(confirmSeleccionados.get(0).getCantidad());
+        for(int i=0;i<confirmSeleccionados.size();i++){
+            if(Integer.parseInt(confirmSeleccionados.get(i).getCantidad())<aux){
+                aux=Integer.parseInt(confirmSeleccionados.get(i).getCantidad());
+            }
+        }
+        return aux;
+    }
     public void llenarPecosas() {
         this.pecosasLista = lg.getCodigoPecosas();
 
@@ -311,7 +325,8 @@ public class DistribucionBean implements Serializable {
         cantidades.clear();
         try {
             int i = 1;
-            while (i <= Integer.parseInt(confirmSeleccionados.get(0).getCantidad())) {
+            int menor = getMenor();
+            while (i <= menor) {
                 cantidades.add(i);
                 i++;
             }
@@ -691,6 +706,22 @@ public class DistribucionBean implements Serializable {
 
     public void setHabilitar(boolean habilitar) {
         this.habilitar = habilitar;
+    }
+
+    public TemporalDao getTd() {
+        return td;
+    }
+
+    public void setTd(TemporalDao td) {
+        this.td = td;
+    }
+
+    public List<Integer> getCantidades2() {
+        return cantidades2;
+    }
+
+    public void setCantidades2(List<Integer> cantidades2) {
+        this.cantidades2 = cantidades2;
     }
 
 }

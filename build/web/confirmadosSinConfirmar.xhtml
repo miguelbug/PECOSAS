@@ -288,7 +288,10 @@
                                 <p:outputLabel value="Producto:"/>
                                 <p:outputLabel value="#{distribucionBean.producto}"/> 
                                 <p:outputLabel value="Disponibles: "/>
-                                <p:outputLabel value="#{distribucionBean.cantidadAsign}"/>
+                                <p:selectOneMenu value="#{distribucionBean.cantidadAsign}">
+                                    <f:selectItem itemLabel="Seleccione" itemValue="-1"/>
+                                    <f:selectItems value="#{distribucionBean.cantidades}"/>
+                                </p:selectOneMenu>
                             </h:panelGrid>
                             <br></br>
                             <p:pickList id="picklist" value="#{distribucionBean.asignaciones}" var="asignaciones" itemLabel="#{asignaciones}" itemValue="#{asignaciones}"
